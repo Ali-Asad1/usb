@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import Layout from "@renderer/components/layout";
 import BarragePage from "@renderer/pages/barrage";
@@ -11,8 +11,9 @@ import SweepPage from "@renderer/pages/sweep";
 const Router = (): JSX.Element => {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/single-tone" />} />
       <Route element={<Layout />}>
-        <Route index path="/single-tone" element={<SinglePage />} />
+        <Route path="/single-tone" element={<SinglePage />} />
         <Route path="/multi-tone" element={<MultiTonePage />} />
         <Route path="/sweep" element={<SweepPage />} />
         <Route path="/barrage" element={<BarragePage />} />
