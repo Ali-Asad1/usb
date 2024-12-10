@@ -21,6 +21,10 @@ export class SerialPortHandler {
         reject(err);
       });
 
+      this.port.on("close", () => {
+        console.log("Port closed");
+      });
+
       this.port.on("data", (data) => {
         console.log(`Received data: ${data}`);
       });
@@ -36,6 +40,7 @@ export class SerialPortHandler {
           console.log("Port closed successfully");
         }
       });
+      this.port = null;
     }
   }
 
@@ -50,6 +55,15 @@ export class SerialPortHandler {
       });
     } else {
       console.warn("No port is connected");
+    }
+  }
+
+  portInfo(): SerialPort | null {
+    if (this.port) {
+      return this.port;
+    } else {
+      console.warn("No port is connected");
+      return null;
     }
   }
 }

@@ -75,6 +75,10 @@ app.whenReady().then(() => {
     serialPortHandler.write(data);
   });
 
+  ipcMain.handle("serialport:portInfo", () => {
+    serialPortHandler.portInfo();
+  });
+
   createWindow();
 
   app.on("activate", function () {

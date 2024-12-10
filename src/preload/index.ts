@@ -11,6 +11,7 @@ try {
       connect: (path: string) => ipcRenderer.invoke("serialport:connect", path),
       disconnect: () => ipcRenderer.invoke("serialport:disconnect"),
       write: (data: string) => ipcRenderer.invoke("serialport:write", data),
+      portInfo: () => ipcRenderer.invoke("serialport:portInfo"),
     },
   });
 } catch (err) {
