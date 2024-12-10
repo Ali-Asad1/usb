@@ -1,9 +1,10 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@renderer/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@renderer/components/ui/toggle-group";
-import { useState } from "react";
+import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 
 const SelectMode = (): JSX.Element => {
-  const [mode, setMode] = useState<string>("ct");
+  const { data, onChange } = useDeviceSettings();
+
   return (
     <Card>
       <CardHeader>
@@ -11,14 +12,24 @@ const SelectMode = (): JSX.Element => {
         <CardDescription>change device mode</CardDescription>
       </CardHeader>
       <CardContent>
-        <ToggleGroup variant="outline" type="single" defaultValue={mode} onValueChange={setMode}>
-          <ToggleGroupItem value="ct" className="data-[state=on]:bg-primary data-[state=on]:text-accent">
+        <ToggleGroup
+          variant="outline"
+          type="single"
+          value={data.NOISES.PSGMODE}
+          onValueChange={(value) => {
+            onChange({ ...data, NOISES: { ...data.NOISES, PSGMODE: value } });
+          }}
+        >
+          <ToggleGroupItem value="0" className="data-[state=on]:bg-primary data-[state=on]:text-accent">
+            None
+          </ToggleGroupItem>
+          <ToggleGroupItem value="1" className="data-[state=on]:bg-primary data-[state=on]:text-accent">
             CT
           </ToggleGroupItem>
-          <ToggleGroupItem value="pulses" className="data-[state=on]:bg-primary data-[state=on]:text-accent">
+          <ToggleGroupItem value="2" className="data-[state=on]:bg-primary data-[state=on]:text-accent">
             Pulses
           </ToggleGroupItem>
-          <ToggleGroupItem value="r.pulse" className="data-[state=on]:bg-primary data-[state=on]:text-accent">
+          <ToggleGroupItem value="3" className="data-[state=on]:bg-primary data-[state=on]:text-accent">
             R.Pulse
           </ToggleGroupItem>
         </ToggleGroup>
