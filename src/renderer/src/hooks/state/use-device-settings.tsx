@@ -4,7 +4,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 interface StoreType<T> {
   data: T;
   history: T[];
-  onChange: (data: T) => void;
+  onChange: (data: any) => void;
   onReset: () => void;
   onCancel: () => void;
   onSubmit: () => void;
