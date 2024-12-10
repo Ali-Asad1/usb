@@ -2,6 +2,9 @@ import { app, shell, BrowserWindow, ipcMain } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
+import { SerialPortHandler } from "./lib/serialPortHandler";
+
+const serialPortHandler = new SerialPortHandler();
 
 function createWindow(): void {
   // Create the browser window.
@@ -12,7 +15,7 @@ function createWindow(): void {
     autoHideMenuBar: true,
     title: "USB",
     center: true,
-    minWidth: 600,
+    minWidth: 900,
     minHeight: 500,
     frame: false,
     vibrancy: "under-window",
@@ -54,6 +57,23 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on("ping", () => console.log("pong"));
+
+  // IPC serial port
+  ipcMain.handle("serialport:list", async () => {
+    return await serialPortHandler.listPorts();
+  });
+
+  ipcMain.handle("serialport:connect", async (_, path: string) => {
+    return await serialPortHandler.connect(path);
+  });
+
+  ipcMain.handle("serialport:disconnect", () => {
+    serialPortHandler.disconnect();
+  });
+
+  ipcMain.handle("serialport:write", (_, data: string) => {
+    serialPortHandler.write(data);
+  });
 
   createWindow();
 
