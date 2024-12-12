@@ -29,6 +29,10 @@ const Sidebar = (): JSX.Element => {
         label: "Delay/Doppler",
         href: "/delay-doppler",
       },
+      {
+        label: "Pulse Generator",
+        href: "/pulse-generator",
+      },
     ],
     [],
   );
