@@ -55,10 +55,10 @@ const initial = {
   NOISES: {
     NOISESS: 0,
     PSGMODE: "0",
-    ONDETER: 500000,
-    OFFDETR: 500000,
-    ONSTOCH: 100000,
-    OFFSTOC: 100000,
+    ONDETER: null,
+    OFFDETR: null,
+    ONSTOCH: null,
+    OFFSTOC: null,
   },
   LOFATT: {
     LOFRQCY: 1000000000,
@@ -77,11 +77,12 @@ export const useDeviceSettings = create(
       history: [initial, initial],
 
       onChange: (data) => {
-        set({ data });
+        const { history } = get();
+        set({ history, data });
       },
 
       onReset: () => {
-        set({ data: initial, history: [] });
+        set({ data: initial, history: [initial, initial] });
       },
 
       onCancel: () => {
