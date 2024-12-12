@@ -2,6 +2,7 @@ import ActionButtons from "@renderer/components/common/action-buttons";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@renderer/components/ui/card";
 import { Checkbox } from "@renderer/components/ui/checkbox";
 import { Input } from "@renderer/components/ui/input";
+import { calculateDecimal, decimalToBinaryArray } from "@renderer/helper/decimal";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 
 const MultiTonePage = (): JSX.Element => {
@@ -35,7 +36,14 @@ const MultiTonePage = (): JSX.Element => {
           }}
         />
         <div className="flex items-center gap-x-2">
-          <Checkbox id="test" />
+          <Checkbox
+            checked={!!decimalToBinaryArray(data.MULTON.MSELECT)[0]}
+            onCheckedChange={(checked) => {
+              const newData = [...decimalToBinaryArray(data.MULTON.MSELECT)];
+              newData[0] = checked ? 1 : 0;
+              onChange({ ...data, MULTON: { ...data.MULTON, MSELECT: calculateDecimal(newData) } });
+            }}
+          />
           Select
         </div>
         <Input
@@ -59,7 +67,14 @@ const MultiTonePage = (): JSX.Element => {
           }}
         />
         <div className="flex items-center gap-x-2">
-          <Checkbox id="test" />
+          <Checkbox
+            checked={!!decimalToBinaryArray(data.MULTON.MSELECT)[1]}
+            onCheckedChange={(checked) => {
+              const newData = [...decimalToBinaryArray(data.MULTON.MSELECT)];
+              newData[1] = checked ? 1 : 0;
+              onChange({ ...data, MULTON: { ...data.MULTON, MSELECT: calculateDecimal(newData) } });
+            }}
+          />
           Select
         </div>
         <Input
@@ -83,7 +98,14 @@ const MultiTonePage = (): JSX.Element => {
           }}
         />
         <div className="flex items-center gap-x-2">
-          <Checkbox id="test" />
+          <Checkbox
+            checked={!!decimalToBinaryArray(data.MULTON.MSELECT)[2]}
+            onCheckedChange={(checked) => {
+              const newData = [...decimalToBinaryArray(data.MULTON.MSELECT)];
+              newData[2] = checked ? 1 : 0;
+              onChange({ ...data, MULTON: { ...data.MULTON, MSELECT: calculateDecimal(newData) } });
+            }}
+          />
           Select
         </div>
         <Input
@@ -107,7 +129,14 @@ const MultiTonePage = (): JSX.Element => {
           }}
         />
         <div className="flex items-center gap-x-2">
-          <Checkbox id="test" />
+          <Checkbox
+            checked={!!decimalToBinaryArray(data.MULTON.MSELECT)[3]}
+            onCheckedChange={(checked) => {
+              const newData = [...decimalToBinaryArray(data.MULTON.MSELECT)];
+              newData[3] = checked ? 1 : 0;
+              onChange({ ...data, MULTON: { ...data.MULTON, MSELECT: calculateDecimal(newData) } });
+            }}
+          />
           Select
         </div>
         <Input
@@ -131,7 +160,14 @@ const MultiTonePage = (): JSX.Element => {
           }}
         />
         <div className="flex items-center gap-x-2">
-          <Checkbox id="test" />
+          <Checkbox
+            checked={!!decimalToBinaryArray(data.MULTON.MSELECT)[4]}
+            onCheckedChange={(checked) => {
+              const newData = [...decimalToBinaryArray(data.MULTON.MSELECT)];
+              newData[4] = checked ? 1 : 0;
+              onChange({ ...data, MULTON: { ...data.MULTON, MSELECT: calculateDecimal(newData) } });
+            }}
+          />
           Select
         </div>
       </CardContent>
