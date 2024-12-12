@@ -23,8 +23,8 @@ const PulseGeneratorPage = (): JSX.Element => {
             <Input
               type="number"
               placeholder="deterministic"
-              min={-28000000}
-              max={28000000}
+              min={0}
+              max={69900000}
               value={deviceMode.deterministic ? (data.NOISES.ONDETER ?? 0) : (data.NOISES.OFFDETR ?? 0)}
               onChange={(e) => {
                 console.log(e.target.value);
@@ -52,8 +52,8 @@ const PulseGeneratorPage = (): JSX.Element => {
             <Input
               type="number"
               placeholder="stochastic"
-              min={-28000000}
-              max={28000000}
+              min={0}
+              max={69900000}
               value={deviceMode.stochastic ? (data.NOISES.ONSTOCH ?? 0) : (data.NOISES.OFFSTOC ?? 0)}
               onChange={(e) => {
                 console.log(e.target.value);
