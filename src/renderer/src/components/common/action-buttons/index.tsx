@@ -1,19 +1,24 @@
 import { Button } from "@renderer/components/ui/button";
 import { createPacket } from "@renderer/helper/packet";
+import { useDeviceMode } from "@renderer/hooks/state/use-device-mode";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 import { Check } from "lucide-react";
 import { toast } from "sonner";
 
 const ActionButtons = () => {
-  const { data, onCancel, onReset, onSubmit } = useDeviceSettings();
+  const { history, data, onCancel, onReset, onSubmit } = useDeviceSettings();
+  const { onCancel: onModeCancel, onReset: onModeReset, onSubmit: onModeSubmit } = useDeviceMode();
 
   const handleSubmit = () => {
     onSubmit();
+    onModeSubmit();
 
     try {
       for (const type in data) {
         for (const attr in data[type]) {
-          window.context.serialPort.write(createPacket("SET", attr, type, data[type][attr]));
+          if (data[type][attr] !== null) {
+            window.context.serialPort.write(createPacket("SET", attr, type, data[type][attr]));
+          }
         }
       }
 
@@ -32,10 +37,25 @@ const ActionButtons = () => {
       <Button onClick={handleSubmit} className="w-32">
         Submit
       </Button>
-      <Button variant="destructive" onClick={onCancel} className="w-32">
+      <Button
+        variant="destructive"
+        onClick={() => {
+          console.log(history, data);
+          onCancel();
+          onModeCancel();
+        }}
+        className="w-32"
+      >
         Cancel
       </Button>
-      <Button variant="secondary" onClick={onReset} className="w-32">
+      <Button
+        variant="secondary"
+        onClick={() => {
+          onReset();
+          onModeReset();
+        }}
+        className="w-32"
+      >
         Reset
       </Button>
     </div>
