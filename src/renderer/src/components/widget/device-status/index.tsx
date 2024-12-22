@@ -18,7 +18,7 @@ const DeviceStatus = (): JSX.Element => {
   const connectToPort = async () => {
     setConnectionStatus("loading");
     try {
-      await window.context.serialPort.connect("COM1");
+      await window.context.serialPort.connect(selectedPort);
       setConnectionStatus("connected");
       toast(`Connected to port ${selectedPort}`, {
         icon: <Check className="text-green-600" />,
