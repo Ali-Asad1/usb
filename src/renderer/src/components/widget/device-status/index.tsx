@@ -102,8 +102,15 @@ const DeviceStatus = (): JSX.Element => {
                 : "Connect"}
           </Button>
           <select
-            onChange={(e) => setSelectedPort(e.target.value)}
+            onChange={(e) => {
+              if (connectionStatus === "connected") {
+                alert("Please disconnect before changing the port.");
+              } else {
+                setSelectedPort(e.target.value);
+              }
+            }}
             className="w-full rounded-md border border-border px-3 py-2 focus-within:outline-none"
+            disabled={connectionStatus === "connected"}
           >
             <option disabled selected>
               select port
