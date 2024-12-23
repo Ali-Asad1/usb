@@ -87,7 +87,7 @@ const PulseGeneratorPage = (): JSX.Element => {
         )}
       </CardContent>
       <CardFooter>
-        <ActionButtons />
+        <ActionButtons values={data.NOISES} type="NOISES" />
       </CardFooter>
     </Card>
   );

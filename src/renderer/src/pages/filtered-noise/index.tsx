@@ -54,7 +54,7 @@ const FilteredNoisePage = (): JSX.Element => {
         </div>
       </CardContent>
       <CardFooter>
-        <ActionButtons />
+        <ActionButtons values={data.FNOISE} type="FNOISE" />
       </CardFooter>
     </Card>
   );

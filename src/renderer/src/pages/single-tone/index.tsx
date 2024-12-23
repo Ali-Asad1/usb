@@ -35,7 +35,7 @@ const SingleTonePage = (): JSX.Element => {
         />
       </CardContent>
       <CardFooter>
-        <ActionButtons />
+        <ActionButtons values={data.SINGLE} type="SINGLE" />
       </CardFooter>
     </Card>
   );

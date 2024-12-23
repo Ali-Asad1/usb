@@ -29,7 +29,7 @@ const BarragePage = (): JSX.Element => {
         </select>
       </CardContent>
       <CardFooter>
-        <ActionButtons />
+        <ActionButtons values={{ ...data.BARAGE }} type="BARAGE" />
       </CardFooter>
     </Card>
   );

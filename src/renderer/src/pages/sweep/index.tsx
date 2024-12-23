@@ -95,7 +95,7 @@ const SweepPage = (): JSX.Element => {
         <div className="">Time: {calculateRange(data.SWEEPF.MINFREQ, data.SWEEPF.MAXFREQ, data.SWEEPF.STPFREQ)}S</div>
       </CardContent>
       <CardFooter>
-        <ActionButtons />
+        <ActionButtons values={data.SWEEPF} type="SWEEPF" />
       </CardFooter>
     </Card>
   );

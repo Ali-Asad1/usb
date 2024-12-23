@@ -172,7 +172,7 @@ const MultiTonePage = (): JSX.Element => {
         </div>
       </CardContent>
       <CardFooter>
-        <ActionButtons />
+        <ActionButtons values={data.MULTON} type="MULTON" />
       </CardFooter>
     </Card>
   );

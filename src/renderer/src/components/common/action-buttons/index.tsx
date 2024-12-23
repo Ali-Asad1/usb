@@ -5,7 +5,12 @@ import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 import { Check } from "lucide-react";
 import { toast } from "sonner";
 
-const ActionButtons = () => {
+interface Props {
+  values: Record<string, any>;
+  type: string;
+}
+
+const ActionButtons = ({ values, type }: Props) => {
   const { history, data, onCancel, onReset, onSubmit } = useDeviceSettings();
   const { onCancel: onModeCancel, onReset: onModeReset, onSubmit: onModeSubmit } = useDeviceMode();
 
@@ -14,11 +19,16 @@ const ActionButtons = () => {
     onModeSubmit();
 
     try {
-      for (const type in data) {
-        for (const attr in data[type]) {
-          if (data[type][attr] !== null) {
-            window.context.serialPort.write(createPacket("SET", attr, type, data[type][attr]));
-          }
+      for (const key in data.LOFATT) {
+        if (data.LOFATT[key] !== null) {
+          window.context.serialPort.write(createPacket("SET", key, "LOFATT", data.LOFATT[key]));
+        }
+      }
+      window.context.serialPort.write(createPacket("SET", "PSGMODE", "NOISES", data.NOISES.PSGMODE));
+
+      for (const attr in values) {
+        if (values[attr] !== null) {
+          window.context.serialPort.write(createPacket("SET", attr, type, values[attr]));
         }
       }
 

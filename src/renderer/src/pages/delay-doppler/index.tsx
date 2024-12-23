@@ -78,7 +78,7 @@ const DelayDopplerPage = (): JSX.Element => {
         </div>
       </CardContent>
       <CardFooter>
-        <ActionButtons />
+        <ActionButtons values={data.DELDOP} type="DELDOP" />
       </CardFooter>
     </Card>
   );
