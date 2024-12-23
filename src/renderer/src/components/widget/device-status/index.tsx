@@ -104,7 +104,7 @@ const DeviceStatus = (): JSX.Element => {
           <select
             onChange={(e) => {
               if (connectionStatus === "connected") {
-                alert("Please disconnect before changing the port.");
+                toast.error("Please disconnect before changing the port.");
               } else {
                 setSelectedPort(e.target.value);
               }
