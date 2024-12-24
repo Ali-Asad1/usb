@@ -68,11 +68,6 @@ const ActionButtons = () => {
           Reset
         </Button>
       </div>
-      {lastSubmitTime && (
-        <div className="text-sm text-gray-500">
-          Last submit time: <span className="font-medium text-black">{lastSubmitTime}</span>
-        </div>
-      )}
     </div>
   );
 };

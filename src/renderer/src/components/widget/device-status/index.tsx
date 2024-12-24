@@ -8,6 +8,8 @@ import { Check, Unplug, XIcon } from "lucide-react";
 type ConnectionStatus = "idle" | "loading" | "connected" | "error" | "disconnect";
 type ListStatus = "loading" | "success" | "failure";
 
+const [lastSubmitTime, setLastSubmitTime] = useState<string | null>(null);
+
 const DeviceStatus = (): JSX.Element => {
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>("idle");
   const [listStatus, setListStatus] = useState<ListStatus>("loading");
@@ -87,7 +89,11 @@ const DeviceStatus = (): JSX.Element => {
           </div>
           <div className="flex items-center justify-between">
             <p className="text-muted-foreground">Last Activity:</p>
-            <Badge variant="secondary">5m ago</Badge>
+            {lastSubmitTime ? (
+              <Badge variant="secondary">{lastSubmitTime}</Badge>
+            ) : (
+              <Badge variant="secondary">No activity yet</Badge>
+            )}
           </div>
           <Button
             className="!mt-20 w-full"
