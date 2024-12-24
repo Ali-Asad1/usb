@@ -2,6 +2,7 @@ import { SerialPort } from "serialport";
 
 export class SerialPortHandler {
   private port: SerialPort | null = null;
+  private dataListener: ((data: string) => void) | null = null;
 
   async listPorts() {
     return SerialPort.list();
@@ -26,7 +27,12 @@ export class SerialPortHandler {
       });
 
       this.port.on("data", (data) => {
-        console.log(`Received data: ${data}`);
+        const receivedData = data.toString();
+        console.log(`Received data: ${receivedData}`);
+
+        if (this.dataListener) {
+          this.dataListener(receivedData);
+        }
       });
     });
   }
@@ -65,5 +71,13 @@ export class SerialPortHandler {
       console.warn("No port is connected");
       return null;
     }
+  }
+
+  onData(listener: (data: string) => void): void {
+    this.dataListener = listener;
+  }
+
+  clearDataListener(): void {
+    this.dataListener = null;
   }
 }

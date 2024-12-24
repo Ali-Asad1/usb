@@ -11,6 +11,8 @@ declare global {
         disconnect: () => void;
         write: (data: string) => void;
         portInfo: () => SerialPort | null;
+        onData: (callback: (data: string) => void) => void;
+        removeOnData: () => void;
       };
     };
   }
