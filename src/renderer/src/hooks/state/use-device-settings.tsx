@@ -8,6 +8,7 @@ interface StoreType<T> {
   onReset: () => void;
   onCancel: () => void;
   onSubmit: () => void;
+  setOnInitial: (type: string, attr: string) => void;
 }
 
 const initial = {
@@ -97,6 +98,17 @@ export const useDeviceSettings = create(
         set({
           history: [history[1], data],
         });
+      },
+
+      setOnInitial: (type, attr) => {
+        set((state) => ({
+          data: {
+            ...state.data,
+            [type]: {
+              [attr]: initial[type][attr],
+            },
+          },
+        }));
       },
     }),
     {
