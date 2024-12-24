@@ -4,10 +4,14 @@ import { useDeviceMode } from "@renderer/hooks/state/use-device-mode";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 import { Check } from "lucide-react";
 import { toast } from "sonner";
+import { useState } from "react";
 
 const ActionButtons = () => {
   const { history, data, onCancel, onReset, onSubmit } = useDeviceSettings();
   const { onCancel: onModeCancel, onReset: onModeReset, onSubmit: onModeSubmit } = useDeviceMode();
+
+  // State برای نگهداری زمان آخرین فعالیت
+  const [lastSubmitTime, setLastSubmitTime] = useState<string | null>(null);
 
   const handleSubmit = () => {
     onSubmit();
@@ -22,7 +26,11 @@ const ActionButtons = () => {
         }
       }
 
-      toast("Data set successfully", {
+      // ثبت زمان فعلی به عنوان آخرین زمان
+      const currentTime = new Date().toLocaleString();
+      setLastSubmitTime(currentTime);
+
+      toast(`Data set successfully at ${currentTime}`, {
         icon: <Check className="text-green-600" />,
       });
     } catch (err: any) {
@@ -33,31 +41,38 @@ const ActionButtons = () => {
   };
 
   return (
-    <div className="flex gap-x-5">
-      <Button onClick={handleSubmit} className="w-32">
-        Submit
-      </Button>
-      <Button
-        variant="destructive"
-        onClick={() => {
-          console.log(history, data);
-          onCancel();
-          onModeCancel();
-        }}
-        className="w-32"
-      >
-        Cancel
-      </Button>
-      <Button
-        variant="secondary"
-        onClick={() => {
-          onReset();
-          onModeReset();
-        }}
-        className="w-32"
-      >
-        Reset
-      </Button>
+    <div className="flex flex-col gap-y-4">
+      <div className="flex gap-x-5">
+        <Button onClick={handleSubmit} className="w-32">
+          Submit
+        </Button>
+        <Button
+          variant="destructive"
+          onClick={() => {
+            console.log(history, data);
+            onCancel();
+            onModeCancel();
+          }}
+          className="w-32"
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            onReset();
+            onModeReset();
+          }}
+          className="w-32"
+        >
+          Reset
+        </Button>
+      </div>
+      {lastSubmitTime && (
+        <div className="text-sm text-gray-500">
+          Last submit time: <span className="font-medium text-black">{lastSubmitTime}</span>
+        </div>
+      )}
     </div>
   );
 };
