@@ -26,9 +26,8 @@ const ActionButtons = () => {
         }
       }
 
-      // ثبت زمان فعلی به عنوان آخرین زمان
-      const currentTime = new Date().toLocaleString();
-      setLastSubmitTime(currentTime);
+      const currentTime = new Date().toLocaleTimeString();
+      setLastSubmitTime(currentTime); // بروزرسانی زمان آخرین فعالیت
 
       toast(`Data set successfully at ${currentTime}`, {
         icon: <Check className="text-green-600" />,
