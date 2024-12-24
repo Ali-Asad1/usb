@@ -1,8 +1,9 @@
 import { Button } from "@renderer/components/ui/button";
-import { createPacket } from "@renderer/helper/packet";
+import { createPacket, parsePacket } from "@renderer/helper/packet";
 import { useDeviceMode } from "@renderer/hooks/state/use-device-mode";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
-import { Check } from "lucide-react";
+import { Check, XIcon } from "lucide-react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
 interface Props {
@@ -11,7 +12,7 @@ interface Props {
 }
 
 const ActionButtons = ({ values, type }: Props) => {
-  const { history, data, onCancel, onReset, onSubmit } = useDeviceSettings();
+  const { history, data, onCancel, onReset, onSubmit, setOnInitial } = useDeviceSettings();
   const { onCancel: onModeCancel, onReset: onModeReset, onSubmit: onModeSubmit } = useDeviceMode();
 
   const handleSubmit = () => {
@@ -37,10 +38,37 @@ const ActionButtons = ({ values, type }: Props) => {
       });
     } catch (err: any) {
       toast(err ?? "Data set failed", {
-        icon: <Check className="text-red-600" />,
+        icon: <XIcon className="text-red-600" />,
       });
     }
   };
+
+  useEffect(() => {
+    const handleResponse = (data: string) => {
+      const parsedResponse = parsePacket(data);
+      if (parsedResponse && parsedResponse.data.toLowerCase() !== "ok") {
+        console.log("reset");
+        setOnInitial(parsedResponse.type, parsedResponse.attribute);
+      }
+
+      if (parsedResponse) {
+        toast(`data ${parsedResponse.attribute}: ${parsedResponse.data}`, {
+          icon:
+            parsedResponse.data.toLocaleLowerCase() === "ok" ? (
+              <Check className="text-green-600" />
+            ) : (
+              <XIcon className="text-red-600" />
+            ),
+        });
+      }
+    };
+
+    window.context.serialPort.onData(handleResponse);
+
+    return () => {
+      window.context.serialPort.removeOnData();
+    };
+  }, []);
 
   return (
     <div className="flex gap-x-5">
