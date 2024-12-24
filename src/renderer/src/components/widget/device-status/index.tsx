@@ -83,7 +83,7 @@ const DeviceStatus = (): JSX.Element => {
           </div>
           <div className="flex items-center justify-between">
             <p className="text-muted-foreground">Speed:</p>
-            <Badge variant="secondary">9600 baud</Badge>
+            <Badge variant="secondary">115200 baud</Badge>
           </div>
           <div className="flex items-center justify-between">
             <p className="text-muted-foreground">Last Activity:</p>
