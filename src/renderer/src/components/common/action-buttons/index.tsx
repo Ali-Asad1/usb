@@ -13,6 +13,8 @@ const ActionButtons = () => {
   // State برای نگهداری زمان آخرین فعالیت
   const [lastSubmitTime, setLastSubmitTime] = useState<string | null>(null);
 
+  const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
   const handleSubmit = () => {
     onSubmit();
     onModeSubmit();
@@ -22,6 +24,7 @@ const ActionButtons = () => {
         for (const attr in data[type]) {
           if (data[type][attr] !== null) {
             window.context.serialPort.write(createPacket("SET", attr, type, data[type][attr]));
+            delay(100);
           }
         }
       }
