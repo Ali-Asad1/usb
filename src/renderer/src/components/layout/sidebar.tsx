@@ -14,7 +14,7 @@ const Sidebar = (): JSX.Element => {
         href: "/multi-tone",
       },
       {
-        label: "Sweep frequency",
+        label: "Sweep",
         href: "/sweep",
       },
       {
