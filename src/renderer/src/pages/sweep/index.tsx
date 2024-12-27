@@ -92,7 +92,22 @@ const SweepPage = (): JSX.Element => {
           />
           Reverse
         </div>
-        <div className="">Time: {calculateRange(data.SWEEPF.MINFREQ, data.SWEEPF.MAXFREQ, data.SWEEPF.STPFREQ)}S</div>
+        <div>
+          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          Time(S)
+          </label>
+          <Input
+            type="number"
+            placeholder="Attenuation"
+            min={0}
+            max={255}
+            value={data.SWEEPF.ATTENVL}
+            onChange={(e) => {
+              onChange({ ...data, SWEEPF: { ...data.SWEEPF, ATTENVL: e.target.value } });
+            }}
+          />
+        </div>
+        {/* <div className="">Time: {calculateRange(data.SWEEPF.MINFREQ, data.SWEEPF.MAXFREQ, data.SWEEPF.STPFREQ)}S</div> */}
       </CardContent>
       <CardFooter>
         <ActionButtons values={data.SWEEPF} type="SWEEPF" />

@@ -15,6 +15,9 @@ const MultiTonePage = (): JSX.Element => {
         <CardDescription>change multi tone frequencies</CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-3 gap-5">
+      {/* <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+             Freq (Hz)
+          </label> */}
         <Input
           type="number"
           placeholder="frequency-0 (Hz) "
@@ -25,6 +28,9 @@ const MultiTonePage = (): JSX.Element => {
             onChange({ ...data, MULTON: { ...data.MULTON, FREQCY0: e.target.value } });
           }}
         />
+        {/* <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        Attenuation
+          </label> */}
         <Input
           type="number"
           placeholder="Attenuation-0"

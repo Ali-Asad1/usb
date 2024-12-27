@@ -8,6 +8,8 @@ import { Check, Unplug, XIcon } from "lucide-react";
 type ConnectionStatus = "idle" | "loading" | "connected" | "error" | "disconnect";
 type ListStatus = "loading" | "success" | "failure";
 
+const [lastSubmitTime, setLastSubmitTime] = useState<string | null>(null);
+
 const DeviceStatus = (): JSX.Element => {
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>("idle");
   const [listStatus, setListStatus] = useState<ListStatus>("loading");
@@ -83,11 +85,15 @@ const DeviceStatus = (): JSX.Element => {
           </div>
           <div className="flex items-center justify-between">
             <p className="text-muted-foreground">Speed:</p>
-            <Badge variant="secondary">9600 baud</Badge>
+            <Badge variant="secondary">115200 baud</Badge>
           </div>
           <div className="flex items-center justify-between">
             <p className="text-muted-foreground">Last Activity:</p>
-            <Badge variant="secondary">5m ago</Badge>
+            {lastSubmitTime ? (
+              <Badge variant="secondary">{lastSubmitTime}</Badge>
+            ) : (
+              <Badge variant="secondary">No activity yet</Badge>
+            )}
           </div>
           <Button
             className="!mt-20 w-full"
@@ -102,8 +108,15 @@ const DeviceStatus = (): JSX.Element => {
                 : "Connect"}
           </Button>
           <select
-            onChange={(e) => setSelectedPort(e.target.value)}
+            onChange={(e) => {
+              if (connectionStatus === "connected") {
+                toast.error("Please disconnect before changing the port.");
+              } else {
+                setSelectedPort(e.target.value);
+              }
+            }}
             className="w-full rounded-md border border-border px-3 py-2 focus-within:outline-none"
+            disabled={connectionStatus === "connected"}
           >
             <option disabled selected>
               select port
