@@ -4,8 +4,9 @@ import PerformanceIndicator from "./performance-indicator";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Check, Unplug, XIcon } from "lucide-react";
+import { parsePacket } from "@renderer/helper/packet";
 
-type ConnectionStatus = "idle" | "loading" | "connected" | "error" | "disconnect";
+export type ConnectionStatus = "idle" | "loading" | "connected" | "error" | "disconnect";
 type ListStatus = "loading" | "success" | "failure";
 
 const DeviceStatus = (): JSX.Element => {
@@ -23,6 +24,47 @@ const DeviceStatus = (): JSX.Element => {
       toast(`Connected to port ${selectedPort}`, {
         icon: <Check className="text-green-600" />,
       });
+      // دستورات GET استاتیک
+      const staticGetCommands = [
+        "START! *GET!!!$$DELDOP *DOPFREQ$$$$!!!!!!!$$RESERVED$$ENDOFPKT\n",
+        "START! *GET!!!$$NOISES *NOISESS$$$$!!!!!!!$$RESERVED$$ENDOFPKT\n",
+        "START! *GET!!!$$NOISES *PSGMODE$$$$!!!!!!!$$RESERVED$$ENDOFPKT\n",
+        "START! *GET!!!$$NOISES *ONDETER$$$$!!!!!!!$$RESERVED$$ENDOFPKT\n",
+        "START! *GET!!!$$NOISES *OFFDETR$$$$!!!!!!!$$RESERVED$$ENDOFPKT\n",
+        "START! *GET!!!$$NOISES *ONSTOCH$$$$!!!!!!!$$RESERVED$$ENDOFPKT\n",
+        "START! *GET!!!$$NOISES *OFFSTOC$$$$!!!!!!!$$RESERVED$$ENDOFPKT\n",
+        "START! *GET!!!$$LOFATT *LOFRQCY$$$$!!!!!!!$$RESERVED$$ENDOFPKT\n",
+        "START! *GET!!!$$LOFATT *TXATTEN$$$$!!!!!!!$$RESERVED$$ENDOFPKT\n",
+        "START! *GET!!!$$LOFATT *TXPOWER$$$$!!!!!!!$$RESERVED$$ENDOFPKT\n",
+      ];
+
+      const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms)); // تعریف تابع تأخیر
+      const responses: string[] = []; // ذخیره پاسخ‌ها
+
+      const handleResponse = (data: string) => {
+        const parsedResponse = parsePacket(data);
+        if (!parsedResponse) {
+          return; // اگر پاسخ قابل پردازش نیست، خروج
+        }
+
+        const lowerCaseData = parsedResponse.data.toLowerCase();
+        console.log(lowerCaseData);
+        // responses.push(data); // ذخیره داده دریافتی
+        // console.log("Received:", data); // نمایش در کنسول
+      };
+
+      // ثبت Listener
+      window.context.serialPort.onData(handleResponse);
+
+      // ارسال دستورات
+      for (const command of staticGetCommands) {
+        window.context.serialPort.write(command);
+        await delay(100); // تأخیر 100 میلی‌ثانیه
+      }
+
+      // بررسی پاسخ‌ها
+      await delay(500); // تأخیر اضافی برای دریافت تمام داده‌ها
+      console.log("All Responses:", responses);
     } catch {
       setConnectionStatus("error");
       toast("Connecting to port failed", {
@@ -83,7 +125,7 @@ const DeviceStatus = (): JSX.Element => {
           </div>
           <div className="flex items-center justify-between">
             <p className="text-muted-foreground">Speed:</p>
-            <Badge variant="secondary">9600 baud</Badge>
+            <Badge variant="secondary">115200 baud</Badge>
           </div>
           <div className="flex items-center justify-between">
             <p className="text-muted-foreground">Last Activity:</p>
@@ -102,8 +144,17 @@ const DeviceStatus = (): JSX.Element => {
                 : "Connect"}
           </Button>
           <select
-            onChange={(e) => setSelectedPort(e.target.value)}
-            className="w-full rounded-md border border-border px-3 py-2 focus-within:outline-none"
+            onChange={(e) => {
+              if (connectionStatus === "connected") {
+                alert("Please disconnect before changing the port.");
+              } else {
+                setSelectedPort(e.target.value);
+              }
+            }}
+            className={`w-full rounded-md border border-border px-3 py-2 focus-within:outline-none ${
+              connectionStatus === "connected" ? "cursor-not-allowed bg-gray-200 text-gray-400" : ""
+            }`}
+            disabled={connectionStatus === "connected"}
           >
             <option disabled selected>
               select port
@@ -115,7 +166,7 @@ const DeviceStatus = (): JSX.Element => {
             ))}
           </select>
         </div>
-        <PerformanceIndicator value={80} className="mx-auto mt-10" />
+        {/* <PerformanceIndicator value={80} className="mx-auto mt-10" /> */}
       </div>
     </div>
   );

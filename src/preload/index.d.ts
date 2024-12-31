@@ -9,7 +9,7 @@ declare global {
         list: () => Promise<PortInfo[]>;
         connect: (path: string) => Promise<void>;
         disconnect: () => void;
-        write: (data: string) => void;
+        write: (data: String) => void; // تغییر نوع آرگومان
         portInfo: () => SerialPort | null;
         onData: (callback: (data: string) => void) => void;
         removeOnData: () => void;

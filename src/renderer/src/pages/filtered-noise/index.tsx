@@ -14,6 +14,9 @@ const FilteredNoisePage = (): JSX.Element => {
         <CardDescription>Change filtered noise</CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-5">
+      <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+      Attenuation
+          </label>
         <select
           defaultValue={data.FNOISE.NOISEBW}
           onChange={(e) => {
@@ -26,7 +29,7 @@ const FilteredNoisePage = (): JSX.Element => {
           <option value={8000000}>8000000</option>
           <option value={5000000}>5000000</option>
           <option value={2000000}>2000000</option>
-          <option value={1000000}>1000000</option>
+          {/* <option value={1000000}>1000000</option> */}
         </select>
         <div>
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -54,7 +57,7 @@ const FilteredNoisePage = (): JSX.Element => {
         </div>
       </CardContent>
       <CardFooter>
-        <ActionButtons values={data.FNOISE} type="FNOISE" />
+        <ActionButtons values={data.FNOISE} type="FNOISE" connectionStatus="connected" />
       </CardFooter>
     </Card>
   );

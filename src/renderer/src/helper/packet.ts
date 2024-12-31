@@ -1,9 +1,9 @@
 export const createPacket = (method: "SET" | "GET", attribute: string, type: string, data: string | number) => {
-  return `START!*${method}!!!$$${type}*${attribute}$$${data.toString().padEnd(10, "!")}$$RESERVED$$ENDOFPKT\n`;
+  return `*START! *${method}!!!$$${type} *${attribute}$$${data.toString().padEnd(10, "!")}$$RESERVED$$ENDOFPKT\n`;
 };
 
 export const parsePacket = (packet: string) => {
-  const match = packet.match(/\*SET!!!\$\$(.*?)\s\*(.*?)\$\$(.*?)\$\$/);
+  const match = packet.match(/\*(SET|GET)!!!\$\$(.*?)\s\*(.*?)\$\$(.*?)\$\$/);
   if (match) {
     return {
       type: match[1],

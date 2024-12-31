@@ -20,7 +20,7 @@ const initial = {
     MINFREQ: 10000000,
     MAXFREQ: 10000000,
     STPFREQ: 100,
-    SWPTIME: 8,
+    SWPTIME: 10,
     ATTENVL: 255,
     REVERSE: 0,
   },

@@ -4,6 +4,7 @@ import { Checkbox } from "@renderer/components/ui/checkbox";
 import { Input } from "@renderer/components/ui/input";
 import { calculateDecimal, decimalToBinaryArray } from "@renderer/helper/decimal";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
+import type { ConnectionStatus } from "@renderer/components/widget/device-status";
 
 const MultiTonePage = (): JSX.Element => {
   const { data, onChange } = useDeviceSettings();
@@ -172,7 +173,7 @@ const MultiTonePage = (): JSX.Element => {
         </div>
       </CardContent>
       <CardFooter>
-        <ActionButtons values={data.MULTON} type="MULTON" />
+        <ActionButtons values={data.MULTON} type="MULTON" connectionStatus= "connected"/>
       </CardFooter>
     </Card>
   );

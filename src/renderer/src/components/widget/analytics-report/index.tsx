@@ -11,8 +11,8 @@ const modeEnum = {
 };
 
 const AnalyticsReport = (): JSX.Element => {
-  const { data } = useDeviceSettings();
-  const { data: deviceMode } = useDeviceMode();
+  const { data, history } = useDeviceSettings();
+  const { data: deviceMode, history: modeHistory } = useDeviceMode();
   return (
     <Card>
       <CardHeader>
@@ -25,10 +25,13 @@ const AnalyticsReport = (): JSX.Element => {
             Selected USB: <Badge variant="secondary">none</Badge>
           </p>
           <p>
-            Frequency Value: <Badge variant="secondary">{data.LOFATT.TXATTEN}</Badge>
+            Frequency Value: <Badge variant="secondary">{history[0].SINGLE.FREQCY0}</Badge>
           </p>
           <p>
-            Mode: <Badge variant="secondary">{modeEnum[deviceMode.mode]}</Badge>
+            Attenution Value: <Badge variant="secondary">{history[0].SINGLE.ATTENV0}</Badge>
+          </p>
+          <p>
+            Mode: <Badge variant="secondary">{modeEnum[modeHistory[0].mode]}</Badge>
           </p>
         </div>
       </CardContent>

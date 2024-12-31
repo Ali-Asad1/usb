@@ -13,6 +13,9 @@ const SingleTonePage = (): JSX.Element => {
         <CardDescription>Change single tone frequencies</CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          Freq (Hz)
+          </label>
         <Input
           type="number"
           placeholder="frequency (Hz)"
@@ -23,6 +26,9 @@ const SingleTonePage = (): JSX.Element => {
             onChange({ ...data, SINGLE: { ...data.SINGLE, FREQCY0: e.target.value } });
           }}
         />
+        <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        Attenuation
+          </label>
         <Input
           type="number"
           placeholder="Attenuation Coefficient"

@@ -5,17 +5,27 @@ import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 import { Check, XIcon } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import type { ConnectionStatus } from "@renderer/components/widget/device-status";
 
 interface Props {
   values: Record<string, any>;
   type: string;
+  connectionStatus: ConnectionStatus; // اضافه کردن connectionStatus به Props
 }
 
-const ActionButtons = ({ values, type }: Props) => {
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const ActionButtons = ({ values, type, connectionStatus }: Props) => {
   const { history, data, onCancel, onReset, onSubmit, setOnInitial } = useDeviceSettings();
   const { onCancel: onModeCancel, onReset: onModeReset, onSubmit: onModeSubmit } = useDeviceMode();
 
-  const handleSubmit = () => {
+  
+  const handleSubmit = async () => { 
+    if (connectionStatus !== "connected") { // چک کردن connectionStatus
+      toast("Please connect to a port first", {
+        icon: <XIcon className="text-red-600" />,
+      });
+      return;
+    } 
     onSubmit();
     onModeSubmit();
 
@@ -23,13 +33,17 @@ const ActionButtons = ({ values, type }: Props) => {
       for (const key in data.LOFATT) {
         if (data.LOFATT[key] !== null) {
           window.context.serialPort.write(createPacket("SET", key, "LOFATT", data.LOFATT[key]));
+          await delay(100); // اضافه کردن تأخیر 100 میلی‌ثانیه
         }
       }
+
       window.context.serialPort.write(createPacket("SET", "PSGMODE", "NOISES", data.NOISES.PSGMODE));
+      await delay(100); // تأخیر برای این ارسال
 
       for (const attr in values) {
         if (values[attr] !== null) {
           window.context.serialPort.write(createPacket("SET", attr, type, values[attr]));
+          await delay(100); // اضافه کردن تأخیر 500 میلی‌ثانیه
         }
       }
 
@@ -46,25 +60,32 @@ const ActionButtons = ({ values, type }: Props) => {
   useEffect(() => {
     const handleResponse = (data: string) => {
       const parsedResponse = parsePacket(data);
-      if (parsedResponse && parsedResponse.data.toLowerCase() !== "ok") {
+      if (!parsedResponse) {
+        return; // اگر پاسخ قابل پردازش نیست، خروج
+      }
+  
+      const validResponses = ["ok", "~valid"]; // پاسخ‌های معتبر
+      if (!validResponses.includes(parsedResponse.data.toLowerCase())) {
+        return; // ایگنور کردن پاسخ‌های نامعتبر
+      }
+  
+      if (parsedResponse.data.toLowerCase() !== "ok") {
         console.log("reset");
         setOnInitial(parsedResponse.type, parsedResponse.attribute);
       }
-
-      if (parsedResponse) {
-        toast(`data ${parsedResponse.attribute}: ${parsedResponse.data}`, {
-          icon:
-            parsedResponse.data.toLocaleLowerCase() === "ok" ? (
-              <Check className="text-green-600" />
-            ) : (
-              <XIcon className="text-red-600" />
-            ),
-        });
-      }
+  
+      toast(`data ${parsedResponse.attribute}: ${parsedResponse.data}`, {
+        icon:
+          parsedResponse.data.toLowerCase() === "ok" ? (
+            <Check className="text-green-600" />
+          ) : (
+            <XIcon className="text-red-600" />
+          ),
+      });
     };
-
+  
     window.context.serialPort.onData(handleResponse);
-
+  
     return () => {
       window.context.serialPort.removeOnData();
     };

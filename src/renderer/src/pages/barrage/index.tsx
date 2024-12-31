@@ -12,6 +12,9 @@ const BarragePage = (): JSX.Element => {
         <CardDescription>Change barrage frequencies</CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-1">
+        <label className="mb-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          Attenuation
+        </label>
         <select
           defaultValue={data.BARAGE.BNUMBER}
           onChange={(e) => {
@@ -29,7 +32,7 @@ const BarragePage = (): JSX.Element => {
         </select>
       </CardContent>
       <CardFooter>
-        <ActionButtons values={{ ...data.BARAGE }} type="BARAGE" />
+        <ActionButtons values={{ ...data.BARAGE }} type="BARAGE" connectionStatus="connected"/>
       </CardFooter>
     </Card>
   );
