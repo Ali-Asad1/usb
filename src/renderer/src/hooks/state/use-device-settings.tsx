@@ -56,10 +56,10 @@ const initial = {
   NOISES: {
     NOISESS: 0,
     PSGMODE: "0",
-    ONDETER: null,
-    OFFDETR: null,
-    ONSTOCH: null,
-    OFFSTOC: null,
+    ONDETER: 0,
+    OFFDETR: 0,
+    ONSTOCH: 0,
+    OFFSTOC: 0,
   },
   LOFATT: {
     LOFRQCY: 1000000000,

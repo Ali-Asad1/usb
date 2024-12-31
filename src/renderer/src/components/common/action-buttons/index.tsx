@@ -27,6 +27,14 @@ const ActionButtons = ({ values, type }: Props) => {
       }
       window.context.serialPort.write(createPacket("SET", "PSGMODE", "NOISES", data.NOISES.PSGMODE));
 
+      if (data.NOISES.PSGMODE === "2") {
+        window.context.serialPort.write(createPacket("SET", "ONDETER", "NOISES", data.NOISES.ONDETER));
+        window.context.serialPort.write(createPacket("SET", "OFFDETR", "NOISES", data.NOISES.OFFDETR));
+      } else if (data.NOISES.PSGMODE === "3") {
+        window.context.serialPort.write(createPacket("SET", "ONSTOCH", "NOISES", data.NOISES.ONSTOCH));
+        window.context.serialPort.write(createPacket("SET", "OFFSTOC", "NOISES", data.NOISES.OFFSTOC));
+      }
+
       for (const attr in values) {
         if (values[attr] !== null) {
           window.context.serialPort.write(createPacket("SET", attr, type, values[attr]));
@@ -47,7 +55,6 @@ const ActionButtons = ({ values, type }: Props) => {
     const handleResponse = (data: string) => {
       const parsedResponse = parsePacket(data);
       if (parsedResponse && parsedResponse.data.toLowerCase() !== "ok") {
-        console.log("reset");
         setOnInitial(parsedResponse.type, parsedResponse.attribute);
       }
 
