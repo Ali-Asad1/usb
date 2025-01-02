@@ -3,12 +3,16 @@ import { Button } from "@renderer/components/ui/button";
 import PerformanceIndicator from "./performance-indicator";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Check, Unplug, XIcon } from "lucide-react";
+import { Check, CheckIcon, Unplug, XIcon } from "lucide-react";
+import { parsePacket } from "@renderer/helper/packet";
+import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 
 type ConnectionStatus = "idle" | "loading" | "connected" | "error" | "disconnect";
 type ListStatus = "loading" | "success" | "failure";
 
 const DeviceStatus = (): JSX.Element => {
+  const { data, updateField, setOnInitial } = useDeviceSettings();
+
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>("idle");
   const [listStatus, setListStatus] = useState<ListStatus>("loading");
 
@@ -41,7 +45,7 @@ const DeviceStatus = (): JSX.Element => {
     }
   };
 
-  const disconnect = async () => {
+  const disconnect = () => {
     window.context.serialPort.disconnect();
     setConnectionStatus("disconnect");
     toast("Port Disconnected", {
@@ -49,8 +53,49 @@ const DeviceStatus = (): JSX.Element => {
     });
   };
 
+  const handleResponse = (chunk: string) => {
+    const parsedResponse = parsePacket(chunk);
+    if (parsedResponse) {
+      switch (parsedResponse.method) {
+        case "SET": {
+          switch (parsedResponse.data) {
+            case "ok":
+              toast(`Data ${parsedResponse.attribute}: set successfully`, {
+                icon: <CheckIcon className="text-green-600" />,
+              });
+              break;
+
+            default:
+              toast(`Error ${parsedResponse.attribute}: ${parsedResponse.data}`, {
+                icon: <XIcon className="text-red-600" />,
+              });
+              setOnInitial(parsedResponse.type, parsedResponse.attribute);
+
+              break;
+          }
+          break;
+        }
+
+        case "GET": {
+          console.log(data);
+          updateField(parsedResponse.type, parsedResponse.attribute, parsedResponse.data);
+          break;
+        }
+
+        default:
+          break;
+      }
+    }
+  };
+
   useEffect(() => {
     getAllPorts();
+
+    window.context.serialPort.onData(handleResponse);
+
+    return () => {
+      window.context.serialPort.removeOnData();
+    };
   }, []);
 
   const renderStatusBadge = () => {
@@ -104,6 +149,7 @@ const DeviceStatus = (): JSX.Element => {
           <select
             onChange={(e) => setSelectedPort(e.target.value)}
             className="w-full rounded-md border border-border px-3 py-2 focus-within:outline-none"
+            disabled={connectionStatus === "connected"}
           >
             <option disabled selected>
               select port
