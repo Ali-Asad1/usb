@@ -2,12 +2,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@renderer/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@renderer/components/ui/popover";
 import { ToggleGroup, ToggleGroupItem } from "@renderer/components/ui/toggle-group";
-import { useDeviceMode } from "@renderer/hooks/state/use-device-mode";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 
 const SelectMode = (): JSX.Element => {
   const { data, onChange } = useDeviceSettings();
-  const { data: mode, onChange: onModeChange } = useDeviceMode();
 
   return (
     <Card>
@@ -23,7 +21,6 @@ const SelectMode = (): JSX.Element => {
           onValueChange={(value) => {
             if (value) {
               onChange({ ...data, NOISES: { ...data.NOISES, PSGMODE: value ? value : data.NOISES.PSGMODE } });
-              onModeChange({ ...mode, mode: value });
             }
           }}
         >

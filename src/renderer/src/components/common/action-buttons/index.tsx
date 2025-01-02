@@ -1,6 +1,5 @@
 import { Button } from "@renderer/components/ui/button";
 import { createPacket } from "@renderer/helper/packet";
-import { useDeviceMode } from "@renderer/hooks/state/use-device-mode";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 import { Check, UnplugIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -12,7 +11,6 @@ interface Props {
 
 const ActionButtons = ({ values, type }: Props) => {
   const { data, onCancel, onReset, onSubmit } = useDeviceSettings();
-  const { onCancel: onModeCancel, onReset: onModeReset, onSubmit: onModeSubmit } = useDeviceMode();
 
   const handleSubmit = async () => {
     const port = await window.context.serialPort.portInfo();
@@ -43,7 +41,6 @@ const ActionButtons = ({ values, type }: Props) => {
       }
 
       onSubmit();
-      onModeSubmit();
 
       toast("Data set successfully", {
         icon: <Check className="text-green-600" />,
@@ -64,7 +61,6 @@ const ActionButtons = ({ values, type }: Props) => {
         variant="destructive"
         onClick={() => {
           onCancel();
-          onModeCancel();
         }}
         className="w-32"
       >
@@ -74,7 +70,6 @@ const ActionButtons = ({ values, type }: Props) => {
         variant="secondary"
         onClick={() => {
           onReset();
-          onModeReset();
         }}
         className="w-32"
       >
