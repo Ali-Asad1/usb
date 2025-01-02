@@ -2,8 +2,8 @@ import { Button } from "@renderer/components/ui/button";
 import { createPacket, parsePacket } from "@renderer/helper/packet";
 import { useDeviceMode } from "@renderer/hooks/state/use-device-mode";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
-import { Check, XIcon } from "lucide-react";
-import { useEffect } from "react";
+import { Check, UnplugIcon, XIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface Props {
@@ -12,18 +12,26 @@ interface Props {
 }
 
 const ActionButtons = ({ values, type }: Props) => {
-  const { history, data, onCancel, onReset, onSubmit, setOnInitial } = useDeviceSettings();
+  const { data, onCancel, onReset, onSubmit, setOnInitial } = useDeviceSettings();
   const { onCancel: onModeCancel, onReset: onModeReset, onSubmit: onModeSubmit } = useDeviceMode();
 
-  const handleSubmit = () => {
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleSubmit = async () => {
+    const port = await window.context.serialPort.portInfo();
+
+    if (!port) {
+      toast("Port isn't connected", { icon: <UnplugIcon className="text-red-600" /> });
+      return;
+    }
+
+    setIsProcessing(true);
     onSubmit();
     onModeSubmit();
 
     try {
       for (const key in data.LOFATT) {
-        if (data.LOFATT[key] !== null) {
-          window.context.serialPort.write(createPacket("SET", key, "LOFATT", data.LOFATT[key]));
-        }
+        window.context.serialPort.write(createPacket("SET", key, "LOFATT", data.LOFATT[key]));
       }
       window.context.serialPort.write(createPacket("SET", "PSGMODE", "NOISES", data.NOISES.PSGMODE));
 
@@ -45,28 +53,34 @@ const ActionButtons = ({ values, type }: Props) => {
         icon: <Check className="text-green-600" />,
       });
     } catch (err: any) {
-      toast(err ?? "Data set failed", {
+      toast("Data set failed", {
         icon: <XIcon className="text-red-600" />,
       });
+    } finally {
+      setTimeout(() => {
+        setIsProcessing(false);
+      }, 1000);
     }
   };
 
   useEffect(() => {
     const handleResponse = (data: string) => {
-      const parsedResponse = parsePacket(data);
-      if (parsedResponse && parsedResponse.data.toLowerCase() !== "ok") {
-        setOnInitial(parsedResponse.type, parsedResponse.attribute);
-      }
+      if (isProcessing) {
+        const parsedResponse = parsePacket(data);
+        if (parsedResponse && parsedResponse.data.toLowerCase() !== "ok") {
+          setOnInitial(parsedResponse.type, parsedResponse.attribute);
+        }
 
-      if (parsedResponse) {
-        toast(`data ${parsedResponse.attribute}: ${parsedResponse.data}`, {
-          icon:
-            parsedResponse.data.toLocaleLowerCase() === "ok" ? (
-              <Check className="text-green-600" />
-            ) : (
-              <XIcon className="text-red-600" />
-            ),
-        });
+        if (parsedResponse) {
+          toast(`data ${parsedResponse.attribute}: ${parsedResponse.data}`, {
+            icon:
+              parsedResponse.data.toLocaleLowerCase() === "ok" ? (
+                <Check className="text-green-600" />
+              ) : (
+                <XIcon className="text-red-600" />
+              ),
+          });
+        }
       }
     };
 
@@ -75,7 +89,7 @@ const ActionButtons = ({ values, type }: Props) => {
     return () => {
       window.context.serialPort.removeOnData();
     };
-  }, []);
+  }, [isProcessing, setOnInitial]);
 
   return (
     <div className="flex gap-x-5">
@@ -85,7 +99,6 @@ const ActionButtons = ({ values, type }: Props) => {
       <Button
         variant="destructive"
         onClick={() => {
-          console.log(history, data);
           onCancel();
           onModeCancel();
         }}
