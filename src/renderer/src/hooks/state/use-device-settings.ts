@@ -9,6 +9,7 @@ interface StoreType<T> {
   onCancel: () => void;
   onSubmit: () => void;
   setOnInitial: (type: string, attr: string) => void;
+  updateField: (type: string, attr: string, value: any) => void;
 }
 
 const initial = {
@@ -109,6 +110,9 @@ export const useDeviceSettings = create(
             },
           },
         }));
+      },
+      updateField: (type, attr, value) => {
+        set((state) => ({ data: { ...state.data, [type]: { ...state.data[type], [attr]: value } } }));
       },
     }),
     {
