@@ -1,9 +1,8 @@
 import { Button } from "@renderer/components/ui/button";
-import { createPacket, parsePacket } from "@renderer/helper/packet";
+import { createPacket } from "@renderer/helper/packet";
 import { useDeviceMode } from "@renderer/hooks/state/use-device-mode";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 import { Check, UnplugIcon, XIcon } from "lucide-react";
-import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface Props {
@@ -12,10 +11,8 @@ interface Props {
 }
 
 const ActionButtons = ({ values, type }: Props) => {
-  const { data, onCancel, onReset, onSubmit, setOnInitial } = useDeviceSettings();
+  const { data, onCancel, onReset, onSubmit } = useDeviceSettings();
   const { onCancel: onModeCancel, onReset: onModeReset, onSubmit: onModeSubmit } = useDeviceMode();
-
-  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async () => {
     const port = await window.context.serialPort.portInfo();
@@ -24,10 +21,6 @@ const ActionButtons = ({ values, type }: Props) => {
       toast("Port isn't connected", { icon: <UnplugIcon className="text-red-600" /> });
       return;
     }
-
-    setIsProcessing(true);
-    onSubmit();
-    onModeSubmit();
 
     try {
       for (const key in data.LOFATT) {
@@ -49,6 +42,9 @@ const ActionButtons = ({ values, type }: Props) => {
         }
       }
 
+      onSubmit();
+      onModeSubmit();
+
       toast("Data set successfully", {
         icon: <Check className="text-green-600" />,
       });
@@ -56,40 +52,8 @@ const ActionButtons = ({ values, type }: Props) => {
       toast("Data set failed", {
         icon: <XIcon className="text-red-600" />,
       });
-    } finally {
-      setTimeout(() => {
-        setIsProcessing(false);
-      }, 1000);
     }
   };
-
-  useEffect(() => {
-    const handleResponse = (data: string) => {
-      if (isProcessing) {
-        const parsedResponse = parsePacket(data);
-        if (parsedResponse && parsedResponse.data.toLowerCase() !== "ok") {
-          setOnInitial(parsedResponse.type, parsedResponse.attribute);
-        }
-
-        if (parsedResponse) {
-          toast(`data ${parsedResponse.attribute}: ${parsedResponse.data}`, {
-            icon:
-              parsedResponse.data.toLocaleLowerCase() === "ok" ? (
-                <Check className="text-green-600" />
-              ) : (
-                <XIcon className="text-red-600" />
-              ),
-          });
-        }
-      }
-    };
-
-    window.context.serialPort.onData(handleResponse);
-
-    return () => {
-      window.context.serialPort.removeOnData();
-    };
-  }, [isProcessing, setOnInitial]);
 
   return (
     <div className="flex gap-x-5">
