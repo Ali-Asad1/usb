@@ -3,9 +3,10 @@ import { Button } from "@renderer/components/ui/button";
 import PerformanceIndicator from "./performance-indicator";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Check, CheckIcon, Unplug, XIcon } from "lucide-react";
-import { parsePacket } from "@renderer/helper/packet";
+import { Check, CheckIcon, Loader2Icon, Unplug, XIcon } from "lucide-react";
+import { createPacket, parsePacket } from "@renderer/helper/packet";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
+import { sleep } from "@renderer/utils/sleep";
 
 type ConnectionStatus = "idle" | "loading" | "connected" | "error" | "disconnect";
 type ListStatus = "loading" | "success" | "failure";
@@ -18,6 +19,8 @@ const DeviceStatus = (): JSX.Element => {
 
   const [ports, setPorts] = useState<any[]>([]);
   const [selectedPort, setSelectedPort] = useState<null | any>(null);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const connectToPort = async () => {
     setConnectionStatus("loading");
@@ -42,6 +45,35 @@ const DeviceStatus = (): JSX.Element => {
       setListStatus("success");
     } catch {
       setListStatus("failure");
+    }
+  };
+
+  const getAllData = async () => {
+    const port = await window.context.serialPort.portInfo();
+    if (port) {
+      for (const type in data) {
+        for (const attr in data[type]) {
+          window.context.serialPort.write(createPacket("GET", type, attr, ""));
+        }
+      }
+    }
+  };
+
+  const handleRefresh = async () => {
+    const port = await window.context.serialPort.portInfo();
+    if (port && connectionStatus === "connected" && !isRefreshing) {
+      setIsRefreshing(true);
+      toast("Refreshing...", {
+        id: "refresh-loading",
+        icon: <Loader2Icon className="animate-spin text-blue-600 duration-1000" />,
+      });
+      await getAllData();
+      await sleep(3000);
+      setIsRefreshing(false);
+      toast("Refresh finished", {
+        id: "refresh-loading",
+        icon: <CheckIcon className="text-green-600" />,
+      });
     }
   };
 
@@ -70,14 +102,12 @@ const DeviceStatus = (): JSX.Element => {
                 icon: <XIcon className="text-red-600" />,
               });
               setOnInitial(parsedResponse.type, parsedResponse.attribute);
-
               break;
           }
           break;
         }
 
         case "GET": {
-          console.log(data);
           updateField(parsedResponse.type, parsedResponse.attribute, parsedResponse.data);
           break;
         }
@@ -97,6 +127,12 @@ const DeviceStatus = (): JSX.Element => {
       window.context.serialPort.removeOnData();
     };
   }, []);
+
+  useEffect(() => {
+    if (connectionStatus === "connected") {
+      getAllData();
+    }
+  }, [connectionStatus]);
 
   const renderStatusBadge = () => {
     switch (connectionStatus) {
@@ -146,6 +182,14 @@ const DeviceStatus = (): JSX.Element => {
                 ? "Disconnect"
                 : "Connect"}
           </Button>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={handleRefresh}
+            disabled={connectionStatus !== "connected"}
+          >
+            Refresh
+          </Button>
           <select
             onChange={(e) => setSelectedPort(e.target.value)}
             className="w-full rounded-md border border-border px-3 py-2 focus-within:outline-none"
@@ -161,7 +205,7 @@ const DeviceStatus = (): JSX.Element => {
             ))}
           </select>
         </div>
-        <PerformanceIndicator value={80} className="mx-auto mt-10" />
+        <PerformanceIndicator value={+data.DPOWER.TXPOWER} className="mx-auto mt-10" />
       </div>
     </div>
   );
