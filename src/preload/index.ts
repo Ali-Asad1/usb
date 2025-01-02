@@ -12,8 +12,6 @@ try {
       disconnect: () => ipcRenderer.invoke("serialport:disconnect"),
       write: (data: string) => ipcRenderer.invoke("serialport:write", data),
       portInfo: () => ipcRenderer.invoke("serialport:portInfo"),
-
-      // Add the onData method to register a listener
       onData: (callback: (data: string) => void) => {
         ipcRenderer.on("serialport:data", (_, data) => callback(data));
       },
