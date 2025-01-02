@@ -53,8 +53,8 @@ const ActionButtons = ({ values, type }: Props) => {
   };
 
   return (
-    <div className="flex gap-x-5">
-      <Button onClick={handleSubmit} className="w-32">
+    <div className="grid w-full grid-cols-1 gap-5 lg:grid-cols-3 xl:w-1/2">
+      <Button onClick={handleSubmit} className="col-span-1 w-full">
         Submit
       </Button>
       <Button
@@ -62,7 +62,7 @@ const ActionButtons = ({ values, type }: Props) => {
         onClick={() => {
           onCancel();
         }}
-        className="w-32"
+        className="col-span-1 w-full"
       >
         Cancel
       </Button>
@@ -71,7 +71,7 @@ const ActionButtons = ({ values, type }: Props) => {
         onClick={() => {
           onReset();
         }}
-        className="w-32"
+        className="col-span-1 w-full"
       >
         Reset
       </Button>
