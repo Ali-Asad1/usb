@@ -13,6 +13,10 @@ const Frequency = (): JSX.Element => {
         <CardDescription>change device frequency</CardDescription>
       </CardHeader>
       <CardContent>
+        <div className="mb-4 flex items-center justify-between">
+          <span>max</span>
+          <span>min</span>
+        </div>
         <Slider
           value={[data.LOFATT.TXATTEN]}
           onValueChange={(values) => {
