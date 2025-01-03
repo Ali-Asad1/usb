@@ -8,7 +8,7 @@ export class SerialPortHandler {
     return SerialPort.list();
   }
 
-  connect(path: string, baudRate = 9600): Promise<string> {
+  connect(path: string, baudRate = 115200): Promise<string> {
     return new Promise((resolve, reject) => {
       this.port = new SerialPort({ path, baudRate });
 
