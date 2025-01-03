@@ -22,7 +22,7 @@ const Frequency = (): JSX.Element => {
           max={70}
           step={1}
         />
-        <div
+        {/* <div
           className={cn(
             "mt-5 w-full rounded-md bg-primary px-5 py-1 font-semibold text-accent transition-colors",
             data.LOFATT.TXATTEN >= 50
@@ -33,7 +33,7 @@ const Frequency = (): JSX.Element => {
           )}
         >
           {data.LOFATT.TXATTEN} dBm
-        </div>
+        </div> */}
         <div className="mt-5">
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
             Local Oscillator frequency (Hz)
