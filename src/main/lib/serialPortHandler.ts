@@ -64,13 +64,8 @@ export class SerialPortHandler {
     }
   }
 
-  portInfo(): SerialPort | null {
-    if (this.port) {
-      return this.port;
-    } else {
-      console.warn("No port is connected");
-      return null;
-    }
+  async portInfo(): Promise<SerialPort | null> {
+    return this.port;
   }
 
   onData(listener: (data: string) => void): void {

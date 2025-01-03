@@ -9,6 +9,7 @@ interface StoreType<T> {
   onCancel: () => void;
   onSubmit: () => void;
   setOnInitial: (type: string, attr: string) => void;
+  updateField: (type: string, attr: string, value: any) => void;
 }
 
 const initial = {
@@ -56,10 +57,10 @@ const initial = {
   NOISES: {
     NOISESS: 0,
     PSGMODE: "0",
-    ONDETER: null,
-    OFFDETR: null,
-    ONSTOCH: null,
-    OFFSTOC: null,
+    ONDETER: 0,
+    OFFDETR: 0,
+    ONSTOCH: 0,
+    OFFSTOC: 0,
   },
   LOFATT: {
     LOFRQCY: 1000000000,
@@ -109,6 +110,9 @@ export const useDeviceSettings = create(
             },
           },
         }));
+      },
+      updateField: (type, attr, value) => {
+        set((state) => ({ data: { ...state.data, [type]: { ...state.data[type], [attr]: value } } }));
       },
     }),
     {

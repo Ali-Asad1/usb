@@ -1,14 +1,15 @@
-export const createPacket = (method: "SET" | "GET", attribute: string, type: string, data: string | number) => {
-  return `START!*${method}!!!$$${type}*${attribute}$$${data.toString().padEnd(10, "!")}$$RESERVED$$ENDOFPKT\n`;
+export const createPacket = (method: "SET" | "GET", type: string, attribute: string, data: string | number) => {
+  return `*START! *${method}!!!$$${type} *${attribute}$$${data.toString().padEnd(10, "!")}$$RESERVED$$ENDOFPKT\n`;
 };
 
 export const parsePacket = (packet: string) => {
-  const match = packet.match(/\*SET!!!\$\$(.*?)\s\*(.*?)\$\$(.*?)\$\$/);
+  const match = packet.match(/\*START!\s\*(\w+)!!!\$\$(\w+)\s\*(\w+)\$\$([-!\w]+)\$\$RESERVED\$\$ENDOFPKT/);
   if (match) {
     return {
-      type: match[1],
-      attribute: match[2],
-      data: match[3].replace(/!+/g, ""),
+      method: match[1],
+      type: match[2],
+      attribute: match[3],
+      data: match[4].replace(/!+/g, ""),
     };
   }
   return null;

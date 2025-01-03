@@ -1,13 +1,11 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@renderer/components/ui/card";
+import { Input } from "@renderer/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@renderer/components/ui/popover";
-import { Switch } from "@renderer/components/ui/swtich";
 import { ToggleGroup, ToggleGroupItem } from "@renderer/components/ui/toggle-group";
-import { useDeviceMode } from "@renderer/hooks/state/use-device-mode";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 
 const SelectMode = (): JSX.Element => {
   const { data, onChange } = useDeviceSettings();
-  const { data: mode, onChange: onModeChange } = useDeviceMode();
 
   return (
     <Card>
@@ -23,7 +21,6 @@ const SelectMode = (): JSX.Element => {
           onValueChange={(value) => {
             if (value) {
               onChange({ ...data, NOISES: { ...data.NOISES, PSGMODE: value ? value : data.NOISES.PSGMODE } });
-              onModeChange({ ...mode, mode: value });
             }
           }}
         >
@@ -37,13 +34,32 @@ const SelectMode = (): JSX.Element => {
             <Popover>
               <PopoverTrigger className="size-full px-3">Pulses</PopoverTrigger>
               <PopoverContent className="flex w-fit items-center gap-x-5">
-                Deterministic
-                <Switch
-                  checked={mode.deterministic}
-                  onCheckedChange={(checked) => {
-                    onModeChange({ ...mode, deterministic: checked });
-                  }}
-                />
+                <div className="space-y-1">
+                  <label>Deterministic On</label>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={69900000}
+                    value={data.NOISES.ONDETER}
+                    placeholder="On Deterministic"
+                    onChange={(e) => {
+                      onChange({ ...data, NOISES: { ...data.NOISES, ONDETER: e.target.value } });
+                    }}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label>Deterministic Of</label>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={69900000}
+                    value={data.NOISES.OFFDETR}
+                    placeholder="Off Deterministic"
+                    onChange={(e) => {
+                      onChange({ ...data, NOISES: { ...data.NOISES, OFFDETR: e.target.value } });
+                    }}
+                  />
+                </div>
               </PopoverContent>
             </Popover>
           </ToggleGroupItem>
@@ -51,13 +67,32 @@ const SelectMode = (): JSX.Element => {
             <Popover>
               <PopoverTrigger className="size-full px-3">R.Pulses</PopoverTrigger>
               <PopoverContent className="flex w-fit items-center gap-x-5">
-                Stochastic
-                <Switch
-                  checked={mode.stochastic}
-                  onCheckedChange={(checked) => {
-                    onModeChange({ ...mode, stochastic: checked });
-                  }}
-                />
+                <div className="space-y-1">
+                  <label>Stochastic On</label>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={69900000}
+                    value={data.NOISES.ONSTOCH}
+                    placeholder="On Stochastic"
+                    onChange={(e) => {
+                      onChange({ ...data, NOISES: { ...data.NOISES, ONSTOCH: e.target.value } });
+                    }}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label>Stochastic Of</label>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={69900000}
+                    value={data.NOISES.OFFSTOC}
+                    placeholder="Off Stochastic"
+                    onChange={(e) => {
+                      onChange({ ...data, NOISES: { ...data.NOISES, OFFSTOC: e.target.value } });
+                    }}
+                  />
+                </div>
               </PopoverContent>
             </Popover>
           </ToggleGroupItem>

@@ -1,6 +1,5 @@
 import { Badge } from "@renderer/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@renderer/components/ui/card";
-import { useDeviceMode } from "@renderer/hooks/state/use-device-mode";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 
 const modeEnum = {
@@ -12,7 +11,6 @@ const modeEnum = {
 
 const AnalyticsReport = (): JSX.Element => {
   const { data } = useDeviceSettings();
-  const { data: deviceMode } = useDeviceMode();
   return (
     <Card>
       <CardHeader>
@@ -28,7 +26,7 @@ const AnalyticsReport = (): JSX.Element => {
             Frequency Value: <Badge variant="secondary">{data.LOFATT.TXATTEN}</Badge>
           </p>
           <p>
-            Mode: <Badge variant="secondary">{modeEnum[deviceMode.mode]}</Badge>
+            Mode: <Badge variant="secondary">{modeEnum[data.NOISES.PSGMODE]}</Badge>
           </p>
         </div>
       </CardContent>

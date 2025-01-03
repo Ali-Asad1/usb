@@ -76,8 +76,10 @@ app.whenReady().then(() => {
     serialPortHandler.write(data);
   });
 
-  ipcMain.handle("serialport:portInfo", () => {
-    return serialPortHandler.portInfo();
+  ipcMain.handle("serialport:portInfo", async () => {
+    const port = await serialPortHandler.portInfo();
+
+    return port ? { port: port.port, baudRate: port.baudRate } : null;
   });
 
   createWindow();

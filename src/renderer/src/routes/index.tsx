@@ -7,7 +7,6 @@ import FilteredNoisePage from "@renderer/pages/filtered-noise";
 import MultiTonePage from "@renderer/pages/multi-tone";
 import SinglePage from "@renderer/pages/single-tone";
 import SweepPage from "@renderer/pages/sweep";
-import PulseGeneratorPage from "@renderer/pages/pulse-generator";
 
 const Router = (): JSX.Element => {
   return (
@@ -20,7 +19,6 @@ const Router = (): JSX.Element => {
         <Route path="/barrage" element={<BarragePage />} />
         <Route path="/filtered-noise" element={<FilteredNoisePage />} />
         <Route path="/delay-doppler" element={<DelayDopplerPage />} />
-        <Route path="/pulse-generator" element={<PulseGeneratorPage />} />
       </Route>
     </Routes>
   );

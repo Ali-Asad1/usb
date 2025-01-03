@@ -10,7 +10,7 @@ declare global {
         connect: (path: string) => Promise<void>;
         disconnect: () => void;
         write: (data: string) => void;
-        portInfo: () => SerialPort | null;
+        portInfo: () => Promise<SerialPort | null>;
         onData: (callback: (data: string) => void) => void;
         removeOnData: () => void;
       };
