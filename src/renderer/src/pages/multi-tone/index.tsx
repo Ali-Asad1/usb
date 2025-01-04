@@ -17,12 +17,21 @@ const MultiTonePage = (): JSX.Element => {
       <CardContent className="grid grid-cols-3 gap-5">
         <Input
           type="number"
-          placeholder="frequency-0 (Hz) "
+          placeholder="frequency-0 (Hz)"
           min={-28000000}
           max={28000000}
           value={data.MULTON.FREQCY0}
           onChange={(e) => {
-            onChange({ ...data, MULTON: { ...data.MULTON, FREQCY0: e.target.value } });
+            let value = Number(e.target.value);
+
+            // Validate the input value
+            if (value < -28000000) {
+              value = -28000000;
+            } else if (value > 28000000) {
+              value = 28000000;
+            }
+
+            onChange({ ...data, MULTON: { ...data.MULTON, FREQCY0: value } });
           }}
         />
         <Input
@@ -32,7 +41,16 @@ const MultiTonePage = (): JSX.Element => {
           max={255}
           value={data.MULTON.ATTENV0}
           onChange={(e) => {
-            onChange({ ...data, MULTON: { ...data.MULTON, ATTENV0: e.target.value } });
+            let value = Number(e.target.value);
+
+            // Validate the input value
+            if (value < 0) {
+              value = 0;
+            } else if (value > 255) {
+              value = 255;
+            }
+
+            onChange({ ...data, MULTON: { ...data.MULTON, ATTENV0: value } });
           }}
         />
         <div className="flex items-center gap-x-2">
@@ -53,7 +71,16 @@ const MultiTonePage = (): JSX.Element => {
           max={28000000}
           value={data.MULTON.FREQCY1}
           onChange={(e) => {
-            onChange({ ...data, MULTON: { ...data.MULTON, FREQCY1: e.target.value } });
+            let value = Number(e.target.value);
+
+            // Validate the input value for frequency-1
+            if (value < -28000000) {
+              value = -28000000;
+            } else if (value > 28000000) {
+              value = 28000000;
+            }
+
+            onChange({ ...data, MULTON: { ...data.MULTON, FREQCY1: value } });
           }}
         />
         <Input
@@ -63,7 +90,16 @@ const MultiTonePage = (): JSX.Element => {
           max={255}
           value={data.MULTON.ATTENV1}
           onChange={(e) => {
-            onChange({ ...data, MULTON: { ...data.MULTON, ATTENV1: e.target.value } });
+            let value = Number(e.target.value);
+
+            // Validate the input value for attenuation-1
+            if (value < 0) {
+              value = 0;
+            } else if (value > 255) {
+              value = 255;
+            }
+
+            onChange({ ...data, MULTON: { ...data.MULTON, ATTENV1: value } });
           }}
         />
         <div className="flex items-center gap-x-2">
@@ -84,7 +120,16 @@ const MultiTonePage = (): JSX.Element => {
           max={28000000}
           value={data.MULTON.FREQCY2}
           onChange={(e) => {
-            onChange({ ...data, MULTON: { ...data.MULTON, FREQCY2: e.target.value } });
+            let value = Number(e.target.value);
+
+            // Validate the input value for frequency-2
+            if (value < -28000000) {
+              value = -28000000;
+            } else if (value > 28000000) {
+              value = 28000000;
+            }
+
+            onChange({ ...data, MULTON: { ...data.MULTON, FREQCY2: value } });
           }}
         />
         <Input
@@ -94,7 +139,16 @@ const MultiTonePage = (): JSX.Element => {
           max={255}
           value={data.MULTON.ATTENV2}
           onChange={(e) => {
-            onChange({ ...data, MULTON: { ...data.MULTON, ATTENV2: e.target.value } });
+            let value = Number(e.target.value);
+
+            // Validate the input value for attenuation-2
+            if (value < 0) {
+              value = 0;
+            } else if (value > 255) {
+              value = 255;
+            }
+
+            onChange({ ...data, MULTON: { ...data.MULTON, ATTENV2: value } });
           }}
         />
         <div className="flex items-center gap-x-2">
@@ -115,7 +169,16 @@ const MultiTonePage = (): JSX.Element => {
           max={28000000}
           value={data.MULTON.FREQCY3}
           onChange={(e) => {
-            onChange({ ...data, MULTON: { ...data.MULTON, FREQCY3: e.target.value } });
+            let value = Number(e.target.value);
+
+            // Validate the input value for frequency-3
+            if (value < -28000000) {
+              value = -28000000;
+            } else if (value > 28000000) {
+              value = 28000000;
+            }
+
+            onChange({ ...data, MULTON: { ...data.MULTON, FREQCY3: value } });
           }}
         />
         <Input
@@ -125,7 +188,16 @@ const MultiTonePage = (): JSX.Element => {
           max={255}
           value={data.MULTON.ATTENV3}
           onChange={(e) => {
-            onChange({ ...data, MULTON: { ...data.MULTON, ATTENV3: e.target.value } });
+            let value = Number(e.target.value);
+
+            // Validate the input value for attenuation-3
+            if (value < 0) {
+              value = 0;
+            } else if (value > 255) {
+              value = 255;
+            }
+
+            onChange({ ...data, MULTON: { ...data.MULTON, ATTENV3: value } });
           }}
         />
         <div className="flex items-center gap-x-2">
@@ -146,7 +218,16 @@ const MultiTonePage = (): JSX.Element => {
           max={28000000}
           value={data.MULTON.FREQCY4}
           onChange={(e) => {
-            onChange({ ...data, MULTON: { ...data.MULTON, FREQCY4: e.target.value } });
+            let value = Number(e.target.value);
+
+            // Validate the input value for frequency-4
+            if (value < -28000000) {
+              value = -28000000;
+            } else if (value > 28000000) {
+              value = 28000000;
+            }
+
+            onChange({ ...data, MULTON: { ...data.MULTON, FREQCY4: value } });
           }}
         />
         <Input
@@ -156,7 +237,16 @@ const MultiTonePage = (): JSX.Element => {
           max={255}
           value={data.MULTON.ATTENV4}
           onChange={(e) => {
-            onChange({ ...data, MULTON: { ...data.MULTON, ATTENV4: e.target.value } });
+            let value = Number(e.target.value);
+
+            // Validate the input value for attenuation-4
+            if (value < 0) {
+              value = 0;
+            } else if (value > 255) {
+              value = 255;
+            }
+
+            onChange({ ...data, MULTON: { ...data.MULTON, ATTENV4: value } });
           }}
         />
         <div className="flex items-center gap-x-2">
