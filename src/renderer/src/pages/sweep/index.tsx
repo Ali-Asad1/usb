@@ -33,7 +33,16 @@ const SweepPage = (): JSX.Element => {
             max={28000000}
             value={data.SWEEPF.MINFREQ}
             onChange={(e) => {
-              onChange({ ...data, SWEEPF: { ...data.SWEEPF, MINFREQ: e.target.value } });
+              let value = Number(e.target.value);
+
+              // Validate the input value
+              if (value < -28000000) {
+                value = -28000000;
+              } else if (value > 28000000) {
+                value = 28000000;
+              }
+
+              onChange({ ...data, SWEEPF: { ...data.SWEEPF, MINFREQ: value } });
             }}
           />
         </div>
@@ -48,7 +57,16 @@ const SweepPage = (): JSX.Element => {
             max={28000000}
             value={data.SWEEPF.MAXFREQ}
             onChange={(e) => {
-              onChange({ ...data, SWEEPF: { ...data.SWEEPF, MAXFREQ: e.target.value } });
+              let value = Number(e.target.value);
+
+              // Validate the input value
+              if (value < -28000000) {
+                value = -28000000;
+              } else if (value > 28000000) {
+                value = 28000000;
+              }
+
+              onChange({ ...data, SWEEPF: { ...data.SWEEPF, MAXFREQ: value } });
             }}
           />
         </div>
@@ -63,7 +81,16 @@ const SweepPage = (): JSX.Element => {
             max={28000000}
             value={data.SWEEPF.STPFREQ}
             onChange={(e) => {
-              onChange({ ...data, SWEEPF: { ...data.SWEEPF, STPFREQ: e.target.value } });
+              let value = Number(e.target.value);
+
+              // Validate the input value
+              if (value < 0) {
+                value = 0;
+              } else if (value > 28000000) {
+                value = 28000000;
+              }
+
+              onChange({ ...data, SWEEPF: { ...data.SWEEPF, STPFREQ: value } });
             }}
           />
         </div>
@@ -78,7 +105,16 @@ const SweepPage = (): JSX.Element => {
             max={255}
             value={data.SWEEPF.ATTENVL}
             onChange={(e) => {
-              onChange({ ...data, SWEEPF: { ...data.SWEEPF, ATTENVL: e.target.value } });
+              let value = Number(e.target.value);
+
+              // Validate the input value
+              if (value < 0) {
+                value = 0;
+              } else if (value > 255) {
+                value = 255;
+              }
+
+              onChange({ ...data, SWEEPF: { ...data.SWEEPF, ATTENVL: value } });
             }}
           />
         </div>
