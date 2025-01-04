@@ -1,12 +1,12 @@
 import { Button } from "@renderer/components/ui/button";
 import { createPacket } from "@renderer/helper/packet";
-import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
+import { DeviceSettingType, useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 import { Check, UnplugIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
 
 interface Props {
   values: Record<string, any>;
-  type: string;
+  type: keyof DeviceSettingType;
 }
 
 const ActionButtons = ({ values, type }: Props) => {
@@ -19,24 +19,46 @@ const ActionButtons = ({ values, type }: Props) => {
       toast("Port isn't connected", { icon: <UnplugIcon className="text-red-600" /> });
       return;
     }
-
     try {
-      for (const key in data.LOFATT) {
-        window.context.serialPort.write(createPacket("SET", key, "LOFATT", data.LOFATT[key]));
+      switch (type) {
+        case "SWEEPF":
+          window.context.serialPort.write(createPacket("SET", "NIOSES", "NOISESS", "0"));
+          break;
+        case "DELDOP":
+          window.context.serialPort.write(createPacket("SET", "NIOSES", "NOISESS", "1"));
+          break;
+        case "FNOISE":
+          window.context.serialPort.write(createPacket("SET", "NIOSES", "NOISESS", "2"));
+          break;
+        case "MULTON":
+          window.context.serialPort.write(createPacket("SET", "NIOSES", "NOISESS", "3"));
+          break;
+        case "SINGLE":
+          window.context.serialPort.write(createPacket("SET", "NIOSES", "NOISESS", "3"));
+          break;
+        case "BARAGE":
+          window.context.serialPort.write(createPacket("SET", "NIOSES", "NOISESS", "4"));
+          break;
+        default:
+          break;
       }
-      window.context.serialPort.write(createPacket("SET", "PSGMODE", "NOISES", data.NOISES.PSGMODE));
+
+      for (const key in data.LOFATT) {
+        window.context.serialPort.write(createPacket("SET", "LOFATT", key, data.LOFATT[key]));
+      }
+      window.context.serialPort.write(createPacket("SET", "NOISES", "PSGMODE", data.NOISES.PSGMODE));
 
       if (data.NOISES.PSGMODE === "2") {
-        window.context.serialPort.write(createPacket("SET", "ONDETER", "NOISES", data.NOISES.ONDETER));
-        window.context.serialPort.write(createPacket("SET", "OFFDETR", "NOISES", data.NOISES.OFFDETR));
+        window.context.serialPort.write(createPacket("SET", "NOISES", "ONDETER", data.NOISES.ONDETER));
+        window.context.serialPort.write(createPacket("SET", "NOISES", "OFFDETR", data.NOISES.OFFDETR));
       } else if (data.NOISES.PSGMODE === "3") {
-        window.context.serialPort.write(createPacket("SET", "ONSTOCH", "NOISES", data.NOISES.ONSTOCH));
-        window.context.serialPort.write(createPacket("SET", "OFFSTOC", "NOISES", data.NOISES.OFFSTOC));
+        window.context.serialPort.write(createPacket("SET", "NOISES", "ONSTOCH", data.NOISES.ONSTOCH));
+        window.context.serialPort.write(createPacket("SET", "NOISES", "OFFSTOC", data.NOISES.OFFSTOC));
       }
 
       for (const attr in values) {
         if (values[attr] !== null) {
-          window.context.serialPort.write(createPacket("SET", attr, type, values[attr]));
+          window.context.serialPort.write(createPacket("SET", type, attr, values[attr]));
         }
       }
 

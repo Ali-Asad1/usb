@@ -72,6 +72,8 @@ const initial = {
   },
 };
 
+export type DeviceSettingType = typeof initial;
+
 export const useDeviceSettings = create(
   persist<StoreType<typeof initial>>(
     (set, get) => ({
