@@ -39,7 +39,16 @@ const FilteredNoisePage = (): JSX.Element => {
             max={27500000}
             value={data.FNOISE.SHFFREQ}
             onChange={(e) => {
-              onChange({ ...data, FNOISE: { ...data.FNOISE, SHFFREQ: e.target.value } });
+              let value = Number(e.target.value);
+
+              // Validate the input value
+              if (value < -27500000) {
+                value = -27500000;
+              } else if (value > 27500000) {
+                value = 27500000;
+              }
+
+              onChange({ ...data, FNOISE: { ...data.FNOISE, SHFFREQ: value } });
             }}
           />
         </div>
