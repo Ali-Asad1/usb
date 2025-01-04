@@ -20,7 +20,14 @@ const SingleTonePage = (): JSX.Element => {
           max={28000000}
           value={data.SINGLE.FREQCY0}
           onChange={(e) => {
-            onChange({ ...data, SINGLE: { ...data.SINGLE, FREQCY0: e.target.value } });
+            let value = Number(e.target.value);
+            // valid range
+            if (value < -28000000) {
+              value = -28000000;
+            } else if (value > 28000000) {
+              value = 28000000;
+            }
+            onChange({ ...data, SINGLE: { ...data.SINGLE, FREQCY0: value } });
           }}
         />
         <Input
@@ -30,7 +37,14 @@ const SingleTonePage = (): JSX.Element => {
           max={255}
           value={data.SINGLE.ATTENV0}
           onChange={(e) => {
-            onChange({ ...data, SINGLE: { ...data.SINGLE, ATTENV0: e.target.value } });
+            let value = Number(e.target.value);
+            // Validate the input value
+            if (value < 0) {
+              value = 0;
+            } else if (value > 255) {
+              value = 255;
+            }
+            onChange({ ...data, SINGLE: { ...data.SINGLE, ATTENV0: value } });
           }}
         />
       </CardContent>
