@@ -49,7 +49,16 @@ const Frequency = (): JSX.Element => {
             max={6000000000}
             value={data.LOFATT.LOFRQCY}
             onChange={(e) => {
-              onChange({ ...data, LOFATT: { ...data.LOFATT, LOFRQCY: e.target.value } });
+              const value = Number(e.target.value);
+
+              // Check if the value is within range
+              if (value >= 70 && value <= 6000000000) {
+                onChange({ ...data, LOFATT: { ...data.LOFATT, LOFRQCY: value } });
+              } else if (value < 70) {
+                onChange({ ...data, LOFATT: { ...data.LOFATT, LOFRQCY: 70 } });
+              } else if (value > 6000000000) {
+                onChange({ ...data, LOFATT: { ...data.LOFATT, LOFRQCY: 6000000000 } });
+              }
             }}
           />
         </div>
