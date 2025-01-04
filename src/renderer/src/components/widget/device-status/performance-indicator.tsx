@@ -1,13 +1,36 @@
+import { createPacket } from "@renderer/helper/packet";
 import { cn } from "@renderer/lib/utils";
+import { useEffect } from "react";
 
 interface Props extends React.ComponentProps<"div"> {
   value: number;
 }
 
 const PerformanceIndicator: React.FC<Props> = ({ value, className, ...props }): JSX.Element => {
+  const updatePower = async () => {
+    const portInfo = await window.context.serialPort.portInfo();
+
+    if (portInfo) {
+      window.context.serialPort.write(createPacket("GET", "DPOWER", "TXPOWER", ""));
+    }
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      updatePower();
+    }, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
   return (
     <div
-      className={cn("relative flex h-36 w-24 overflow-hidden rounded-lg border-4 border-slate-700", className)}
+      className={cn(
+        "relative mb-10 flex h-36 w-24 shrink-0 overflow-hidden rounded-lg border-4 border-slate-700",
+        className,
+      )}
       {...props}
     >
       <div
