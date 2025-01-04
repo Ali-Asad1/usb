@@ -128,7 +128,32 @@ const SweepPage = (): JSX.Element => {
           />
           Reverse
         </div>
-        <div className="">Time: {calculateRange(data.SWEEPF.MINFREQ, data.SWEEPF.MAXFREQ, data.SWEEPF.STPFREQ)}S</div>
+        {/* <div className="">Time: {calculateRange(data.SWEEPF.MINFREQ, data.SWEEPF.MAXFREQ, data.SWEEPF.STPFREQ)}S</div> */}
+        <div>
+          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+            Time (s)
+          </label>
+          <Input
+            type="number"
+            min={0}
+            max={calculateRange(data.SWEEPF.MINFREQ, data.SWEEPF.MAXFREQ, data.SWEEPF.STPFREQ)}
+            value={data.SWEEPF.SWPTIME}
+            onChange={(e) => {
+              let value = Number(e.target.value);
+
+              // Validate the input value within range
+              const maxRange = calculateRange(data.SWEEPF.MINFREQ, data.SWEEPF.MAXFREQ, data.SWEEPF.STPFREQ);
+
+              if (value < 0) {
+                value = 0;
+              } else if (value > maxRange) {
+                value = maxRange;
+              }
+
+              onChange({ ...data, SWEEPF: { ...data.SWEEPF, SWPTIME: value } }); 
+            }}
+          />
+        </div>
       </CardContent>
       <CardFooter>
         <ActionButtons values={data.SWEEPF} type="SWEEPF" />
