@@ -72,7 +72,16 @@ const DelayDopplerPage = (): JSX.Element => {
             max={28000000}
             value={data.DELDOP.DOPFREQ}
             onChange={(e) => {
-              onChange({ ...data, DELDOP: { ...data.DELDOP, DOPFREQ: e.target.value } });
+              let value = Number(e.target.value);
+
+              // Validate the input value
+              if (value < -28000000) {
+                value = -28000000;
+              } else if (value > 28000000) {
+                value = 28000000;
+              }
+
+              onChange({ ...data, DELDOP: { ...data.DELDOP, DOPFREQ: value } });
             }}
           />
         </div>
