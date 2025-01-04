@@ -59,6 +59,11 @@ app.whenReady().then(() => {
   // IPC test
   ipcMain.on("ping", () => console.log("pong"));
 
+  // IPC app
+  ipcMain.on("exit-app", () => {
+    app.exit();
+  });
+
   // IPC serial port
   ipcMain.handle("serialport:list", async () => {
     return await serialPortHandler.listPorts();

@@ -20,6 +20,10 @@ try {
         ipcRenderer.removeAllListeners("serialport:data");
       },
     },
+
+    app: {
+      exit: () => ipcRenderer.send("exit-app"),
+    },
   });
 } catch (err) {
   console.error("Error in contextBridge:", err);

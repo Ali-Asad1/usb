@@ -14,6 +14,10 @@ declare global {
         onData: (callback: (data: string) => void) => void;
         removeOnData: () => void;
       };
+
+      app: {
+        exit: () => void;
+      };
     };
   }
 }

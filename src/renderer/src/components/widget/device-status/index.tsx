@@ -7,6 +7,7 @@ import { Check, CheckIcon, Loader2Icon, Unplug, XIcon } from "lucide-react";
 import { createPacket, parsePacket } from "@renderer/helper/packet";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 import { sleep } from "@renderer/utils/sleep";
+import ExitButton from "./exit-button";
 
 type ConnectionStatus = "idle" | "loading" | "connected" | "error" | "disconnect";
 type ListStatus = "loading" | "success" | "failure";
@@ -149,7 +150,7 @@ const DeviceStatus = (): JSX.Element => {
 
   return (
     <div className="h-screen w-72 shrink-0 p-5">
-      <div className="h-full overflow-y-auto rounded-lg bg-card px-3 py-5 shadow-lg">
+      <div className="flex h-full flex-col overflow-y-auto rounded-lg bg-card px-3 py-5 shadow-lg">
         <h2 className="mb-5 border-b border-border pb-2 text-lg font-semibold text-accent-foreground">
           Connection Info
         </h2>
@@ -206,6 +207,7 @@ const DeviceStatus = (): JSX.Element => {
           </select>
         </div>
         <PerformanceIndicator value={+data.DPOWER.TXPOWER} className="mx-auto mt-10" />
+        <ExitButton />
       </div>
     </div>
   );
