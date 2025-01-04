@@ -26,7 +26,7 @@ const FilteredNoisePage = (): JSX.Element => {
           <option value={8000000}>8000000</option>
           <option value={5000000}>5000000</option>
           <option value={2000000}>2000000</option>
-          <option value={1000000}>1000000</option>
+          {/* <option value={1000000}>1000000</option> */}
         </select>
         <div>
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
