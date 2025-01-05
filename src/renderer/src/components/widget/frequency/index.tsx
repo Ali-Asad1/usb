@@ -45,20 +45,20 @@ const Frequency = (): JSX.Element => {
           <Input
             type="number"
             placeholder="Local Oscillator (LO) frequency (Hz)"
-            min={70}
-            max={6000000000}
+            min={150000000}
+            max={5500000000}
             value={data.LOFATT.LOFRQCY}
             onChange={(e) => {
-              const value = Number(e.target.value);
+              let value = Number(e.target.value);
 
-              // Check if the value is within range
-              if (value >= 70 && value <= 6000000000) {
-                onChange({ ...data, LOFATT: { ...data.LOFATT, LOFRQCY: value } });
-              } else if (value < 70) {
-                onChange({ ...data, LOFATT: { ...data.LOFATT, LOFRQCY: 70 } });
-              } else if (value > 6000000000) {
-                onChange({ ...data, LOFATT: { ...data.LOFATT, LOFRQCY: 6000000000 } });
+              // Validate the input value for the new range
+              if (value < 150000000) {
+                value = 150000000;
+              } else if (value > 5500000000) {
+                value = 5500000000;
               }
+
+              onChange({ ...data, LOFATT: { ...data.LOFATT, LOFRQCY: value } });
             }}
           />
         </div>
