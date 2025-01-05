@@ -6,8 +6,8 @@ export const calculateDecimal = (selectedFrequencies: number[]) => {
   return parseInt(selectedFrequencies.join(""), 2);
 };
 
-export const decimalToBinaryArray = (decimalNumber: number) => {
-  const binaryString = decimalNumber.toString(2).padStart(5, "0");
+export const decimalToBinaryArray = (decimalNumber: number | string) => {
+  const binaryString = Number(decimalNumber).toString(2).padStart(5, "0");
 
   return Array.from(binaryString).map(Number);
 };
