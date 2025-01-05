@@ -10,8 +10,8 @@ const DelayDopplerPage = (): JSX.Element => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Delay/Doppler signal</CardTitle>
-        <CardDescription>Change Delay/Doppler frequencies</CardDescription>
+        <CardTitle>Delay/Doppler Repeater</CardTitle>
+        {/* <CardDescription>Change Delay/Doppler frequencies</CardDescription> */}
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-5">
         <div className="flex items-center gap-x-2">
@@ -35,7 +35,7 @@ const DelayDopplerPage = (): JSX.Element => {
 
         <div>
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Shift Noise (Hz)
+            Delay (x 100 us)
           </label>
           <select
             defaultValue={data.DELDOP.DLYVALU / 100}
@@ -63,7 +63,7 @@ const DelayDopplerPage = (): JSX.Element => {
 
         <div>
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Shift Noise (Hz)
+            Doppler (Hz)
           </label>
           <Input
             type="number"

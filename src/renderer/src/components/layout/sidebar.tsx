@@ -26,7 +26,7 @@ const Sidebar = (): JSX.Element => {
         href: "/filtered-noise",
       },
       {
-        label: "Delay/Doppler",
+        label: "Delay/Doppler Repeater",
         href: "/delay-doppler",
       },
     ],
@@ -35,7 +35,7 @@ const Sidebar = (): JSX.Element => {
 
   return (
     <div className="h-screen w-64 shrink-0 overflow-y-auto bg-gradient-to-t from-accent-foreground from-10% to-primary px-3 py-5 ring">
-      <h2 className="text-2xl font-bold text-accent">USB Agent</h2>
+      <h2 className="text-2xl font-bold text-accent">Noise Generator</h2>
       <div className="mt-20 space-y-5">
         {navbarItems.map((item, index) => (
           <NavLink
@@ -52,6 +52,13 @@ const Sidebar = (): JSX.Element => {
           </NavLink>
         ))}
       </div>
+      {/* <div className="mt-auto">
+      <img
+        src="C:\Users\PARSE\Documents\usb2\usb\PazhanLogo.png" 
+        alt="Sidebar Image"
+        className="w-full h-auto mt-5 rounded-lg"
+      />
+    </div> */}
     </div>
   );
 };

@@ -164,13 +164,13 @@ const DeviceStatus = (): JSX.Element => {
             <Badge variant="secondary">{selectedPort || "none"}</Badge>
           </div>
           <div className="flex items-center justify-between">
-            <p className="text-muted-foreground">Speed:</p>
-            <Badge variant="secondary">115200 baud</Badge>
+            <p className="text-muted-foreground">Baundrate:</p>
+            <Badge variant="secondary">115200 </Badge>
           </div>
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <p className="text-muted-foreground">Last Activity:</p>
             <Badge variant="secondary">5m ago</Badge>
-          </div>
+          </div> */}
           <Button
             className="!mt-20 w-full"
             variant={connectionStatus === "connected" ? "destructive" : "default"}
@@ -207,6 +207,7 @@ const DeviceStatus = (): JSX.Element => {
           </select>
         </div>
         <PerformanceIndicator value={+data.DPOWER.TXPOWER} className="mx-auto mt-10" />
+        <div className="mt-0 space-y-5 text-muted-foreground text-sm text-center">Output Power (dbm)</div>
         <ExitButton />
       </div>
     </div>

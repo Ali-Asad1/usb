@@ -8,10 +8,13 @@ const BarragePage = (): JSX.Element => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Barrage signal</CardTitle>
-        <CardDescription>Change barrage frequencies</CardDescription>
+        <CardTitle>Barrage </CardTitle>
+        {/* <CardDescription>Change barrage frequencies</CardDescription> */}
       </CardHeader>
       <CardContent className="grid grid-cols-1">
+        <label htmlFor="frequency0" className="mb-2 text-sm font-semibold">
+          Number of Carriers
+        </label>
         <select
           defaultValue={data.BARAGE.BNUMBER}
           onChange={(e) => {

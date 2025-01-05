@@ -9,8 +9,8 @@ const Frequency = (): JSX.Element => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Frequency</CardTitle>
-        <CardDescription>change device frequency</CardDescription>
+        <CardTitle>RF Settings</CardTitle>
+        {/* <CardDescription>change device frequency</CardDescription> */}
       </CardHeader>
       <CardContent>
         <div className="mb-4 flex items-center justify-between">
@@ -22,8 +22,8 @@ const Frequency = (): JSX.Element => {
           onValueChange={(values) => {
             onChange({ ...data, LOFATT: { ...data.LOFATT, TXATTEN: values[0] } });
           }}
-          min={0}
-          max={70}
+          min={10}
+          max={55}
           step={1}
         />
         {/* <div
@@ -40,7 +40,7 @@ const Frequency = (): JSX.Element => {
         </div> */}
         <div className="mt-5">
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Local Oscillator frequency (Hz)
+           frequency (Hz)
           </label>
           <Input
             type="number"

@@ -11,9 +11,12 @@ const FilteredNoisePage = (): JSX.Element => {
     <Card>
       <CardHeader>
         <CardTitle>Filtered Noise</CardTitle>
-        <CardDescription>Change filtered noise</CardDescription>
+        {/* <CardDescription>Change filtered noise</CardDescription> */}
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-5">
+        <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          Bandwidth
+        </label>
         <select
           defaultValue={data.FNOISE.NOISEBW}
           onChange={(e) => {
@@ -30,7 +33,7 @@ const FilteredNoisePage = (): JSX.Element => {
         </select>
         <div>
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Shift Noise (Hz)
+            Center Frequency (Hz)
           </label>
           <Input
             type="number"

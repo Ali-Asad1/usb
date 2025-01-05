@@ -18,13 +18,13 @@ const SweepPage = (): JSX.Element => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sweep signal</CardTitle>
-        <CardDescription>Change Sweep signals</CardDescription>
+        <CardTitle>Sweep </CardTitle>
+        {/* <CardDescription>Change Sweep signals</CardDescription> */}
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <div>
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Min Freq (Hz)
+            F min (Hz)
           </label>
           <Input
             type="number"
@@ -48,7 +48,7 @@ const SweepPage = (): JSX.Element => {
         </div>
         <div>
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Max Freq (Hz)
+            F max (Hz)
           </label>
           <Input
             type="number"
@@ -72,7 +72,7 @@ const SweepPage = (): JSX.Element => {
         </div>
         <div>
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Step
+            Step (Hz)
           </label>
           <Input
             type="number"
@@ -96,7 +96,7 @@ const SweepPage = (): JSX.Element => {
         </div>
         <div>
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Attenuation
+          Level (0-255)
           </label>
           <Input
             type="number"
@@ -126,12 +126,12 @@ const SweepPage = (): JSX.Element => {
               onChange({ ...data, SWEEPF: { ...data.SWEEPF, REVERSE: checked ? 1 : 0 } });
             }}
           />
-          Reverse
+          Reverse Sweep
         </div>
         {/* <div className="">Time: {calculateRange(data.SWEEPF.MINFREQ, data.SWEEPF.MAXFREQ, data.SWEEPF.STPFREQ)}S</div> */}
         <div>
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Time (s)
+            Sweep Time (s)
           </label>
           <Input
             type="number"

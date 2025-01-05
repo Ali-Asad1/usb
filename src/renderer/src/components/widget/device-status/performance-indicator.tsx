@@ -46,7 +46,7 @@ const PerformanceIndicator: React.FC<Props> = ({ value, className, ...props }): 
           value > 70 ? "text-accent" : value > 50 ? "text-accent-foreground" : "text-accent-foreground",
         )}
       >
-        {value}%
+        {value}
       </span>
     </div>
   );
