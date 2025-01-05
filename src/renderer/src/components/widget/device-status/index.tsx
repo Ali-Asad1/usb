@@ -91,7 +91,7 @@ const DeviceStatus = (): JSX.Element => {
     if (parsedResponse) {
       switch (parsedResponse.method) {
         case "SET": {
-          switch (parsedResponse.data) {
+          switch (parsedResponse.data.toLowerCase()) {
             case "ok":
               toast(`Data ${parsedResponse.attribute}: set successfully`, {
                 icon: <CheckIcon className="text-green-600" />,
