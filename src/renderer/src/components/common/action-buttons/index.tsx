@@ -22,22 +22,22 @@ const ActionButtons = ({ values, type }: Props) => {
     try {
       switch (type) {
         case "SWEEPF":
-          window.context.serialPort.write(createPacket("SET", "NIOSES", "NOISESS", "0"));
+          window.context.serialPort.write(createPacket("SET", "NOISES", "NOISESS", "0"));
           break;
         case "DELDOP":
-          window.context.serialPort.write(createPacket("SET", "NIOSES", "NOISESS", "1"));
+          window.context.serialPort.write(createPacket("SET", "NOISES", "NOISESS", "1"));
           break;
         case "FNOISE":
-          window.context.serialPort.write(createPacket("SET", "NIOSES", "NOISESS", "2"));
+          window.context.serialPort.write(createPacket("SET", "NOISES", "NOISESS", "2"));
           break;
         case "MULTON":
-          window.context.serialPort.write(createPacket("SET", "NIOSES", "NOISESS", "3"));
+          window.context.serialPort.write(createPacket("SET", "NOISES", "NOISESS", "3"));
           break;
         case "SINGLE":
-          window.context.serialPort.write(createPacket("SET", "NIOSES", "NOISESS", "3"));
+          window.context.serialPort.write(createPacket("SET", "NOISES", "NOISESS", "3"));
           break;
         case "BARAGE":
-          window.context.serialPort.write(createPacket("SET", "NIOSES", "NOISESS", "4"));
+          window.context.serialPort.write(createPacket("SET", "NOISES", "NOISESS", "4"));
           break;
         default:
           break;
