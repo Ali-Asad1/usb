@@ -12,7 +12,7 @@ const Layout = (): JSX.Element => {
       <Header />
       <Sidebar />
       <div className="h-screen max-h-screen w-full space-y-5 overflow-y-auto p-5">
-        <h1 className="text-3xl font-bold">Config Setting</h1>
+        <h1 className="text-3xl font-bold"> Setting</h1>
         <div className="grid grid-cols-1 gap-10 xl:grid-cols-2">
           <Frequency />
           <SelectMode />

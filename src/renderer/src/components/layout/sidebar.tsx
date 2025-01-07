@@ -1,6 +1,7 @@
 import { cn } from "@renderer/lib/utils";
 import { useMemo } from "react";
 import { NavLink } from "react-router-dom";
+import PazhanLogo from "../../assets/Pazhan_Logo.png";
 
 const Sidebar = (): JSX.Element => {
   const navbarItems = useMemo(
@@ -26,7 +27,7 @@ const Sidebar = (): JSX.Element => {
         href: "/filtered-noise",
       },
       {
-        label: "Delay/Doppler Repeater",
+        label: "Repeater",
         href: "/delay-doppler",
       },
     ],
@@ -52,13 +53,9 @@ const Sidebar = (): JSX.Element => {
           </NavLink>
         ))}
       </div>
-      {/* <div className="mt-auto">
-      <img
-        src="C:\Users\PARSE\Documents\usb2\usb\PazhanLogo.png" 
-        alt="Sidebar Image"
-        className="w-full h-auto mt-5 rounded-lg"
-      />
-    </div> */}
+      <div className="mt-auto">
+        <img src={PazhanLogo} className="mt-16 h-auto w-full rounded-lg opacity-70" />
+      </div>
     </div>
   );
 };

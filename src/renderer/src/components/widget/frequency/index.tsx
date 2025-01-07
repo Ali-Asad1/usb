@@ -10,7 +10,7 @@ const Frequency = (): JSX.Element => {
     <Card>
       <CardHeader>
         <CardTitle>RF Settings</CardTitle>
-        {/* <CardDescription>change device frequency</CardDescription> */}
+        <CardDescription>Power Level</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="mb-4 flex items-center justify-between">
@@ -40,11 +40,11 @@ const Frequency = (): JSX.Element => {
         </div> */}
         <div className="mt-5">
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-           frequency (Hz)
+           Frequency (Hz)
           </label>
           <Input
             type="number"
-            placeholder="Local Oscillator (LO) frequency (Hz)"
+            placeholder="frequency (Hz)"
             min={150000000}
             max={5500000000}
             value={data.LOFATT.LOFRQCY}

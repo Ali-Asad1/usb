@@ -35,13 +35,13 @@ const SelectMode = (): JSX.Element => {
               <PopoverTrigger className="size-full px-3">Pulse</PopoverTrigger>
               <PopoverContent className="flex w-fit items-center gap-x-5">
                 <div className="space-y-1">
-                  <label>On Time(us)</label>
+                  <label>On Time (us)</label>
                   <Input
                     type="number"
                     min={0}
                     max={69900000}
                     value={data.NOISES.ONDETER}
-                    placeholder="On Deterministic"
+                    placeholder="On Time (us)"
                     onChange={(e) => {
                       let value = Number(e.target.value);
                       // Valid range
@@ -55,13 +55,13 @@ const SelectMode = (): JSX.Element => {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label>Off Time(us)</label>
+                  <label>Off Time (us)</label>
                   <Input
                     type="number"
                     min={0}
                     max={69900000}
                     value={data.NOISES.OFFDETR}
-                    placeholder="Off Deterministic"
+                    placeholder="Off Time (us)"
                     onChange={(e) => {
                       let value = Number(e.target.value);
                       // Valid range
@@ -79,16 +79,16 @@ const SelectMode = (): JSX.Element => {
           </ToggleGroupItem>
           <ToggleGroupItem value="3" className="px-0 data-[state=on]:bg-primary data-[state=on]:text-accent">
             <Popover>
-              <PopoverTrigger className="size-full px-3">R.Pulses</PopoverTrigger>
+              <PopoverTrigger className="size-full px-3">Random Pulse</PopoverTrigger>
               <PopoverContent className="flex w-fit items-center gap-x-5">
                 <div className="space-y-1">
-                  <label>On Time(us)</label>
+                  <label>On Time (us)</label>
                   <Input
                     type="number"
                     min={0}
                     max={69900000}
                     value={data.NOISES.ONSTOCH}
-                    placeholder="On Stochastic"
+                    placeholder="On Time (us)"
                     onChange={(e) => {
                       let value = Number(e.target.value);
                       // Valid range
@@ -102,13 +102,13 @@ const SelectMode = (): JSX.Element => {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label>Off Time(us)</label>
+                  <label>Off Time (us)</label>
                   <Input
                     type="number"
                     min={0}
                     max={69900000}
                     value={data.NOISES.OFFSTOC}
-                    placeholder="Off Stochastic"
+                    placeholder="Off Time (us)"
                     onChange={(e) => {
                       let value = Number(e.target.value);
                       // Valid range

@@ -10,7 +10,7 @@ const DelayDopplerPage = (): JSX.Element => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Delay/Doppler Repeater</CardTitle>
+        <CardTitle>Repeater</CardTitle>
         {/* <CardDescription>Change Delay/Doppler frequencies</CardDescription> */}
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-5">

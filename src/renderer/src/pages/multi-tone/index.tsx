@@ -11,9 +11,14 @@ const MultiTonePage = (): JSX.Element => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Multi Tone signals</CardTitle>
-        <CardDescription>change multi tone frequencies</CardDescription>
+        <CardTitle>Multi Tone</CardTitle>
+        {/* <CardDescription>change multi tone frequencies</CardDescription> */}
       </CardHeader>
+      <div className="flex flex-wrap items-center justify-right space-y-2 md:space-y-0">
+        <span className="text-sm font-medium md:ml-10">Frequency (Hz)</span>
+        <span className="text-sm font-medium md:ml-60">Level (0-255)</span>
+      </div>
+
       <CardContent className="grid grid-cols-3 gap-5">
         <Input
           type="number"
