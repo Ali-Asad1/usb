@@ -12,7 +12,7 @@ function createWindow(): void {
     height: 670,
     show: false,
     autoHideMenuBar: true,
-    title: "USB",
+    title: "noise generator",
     center: true,
     minWidth: 900,
     minHeight: 500,

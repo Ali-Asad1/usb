@@ -35,7 +35,7 @@ const Sidebar = (): JSX.Element => {
   );
 
   return (
-    <div className="h-screen w-64 shrink-0 overflow-y-auto bg-gradient-to-t from-accent-foreground from-10% to-primary px-3 py-5 ring">
+    <div className="flex h-screen w-64 shrink-0 flex-col bg-gradient-to-t from-accent-foreground from-10% to-primary px-3 py-5 ring">
       <h2 className="text-2xl font-bold text-accent">Noise Generator</h2>
       <div className="mt-20 space-y-5">
         {navbarItems.map((item, index) => (
@@ -53,9 +53,9 @@ const Sidebar = (): JSX.Element => {
           </NavLink>
         ))}
       </div>
-      <div className="mt-auto">
-        <img src={PazhanLogo} className="mt-16 h-auto w-full rounded-lg opacity-70" />
-      </div>
+      {/* <div className="mt-auto">
+        <img src={PazhanLogo} className="w-full scale-110 rounded-lg opacity-70" alt="Logo" />
+      </div> */}
     </div>
   );
 };

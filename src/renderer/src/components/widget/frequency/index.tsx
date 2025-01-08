@@ -10,9 +10,10 @@ const Frequency = (): JSX.Element => {
     <Card>
       <CardHeader>
         <CardTitle>RF Settings</CardTitle>
-        <CardDescription>Power Level</CardDescription>
+        {/* <CardDescription>Power Level</CardDescription> */}
       </CardHeader>
       <CardContent>
+      <CardDescription>Power Level</CardDescription>
         <div className="mb-4 flex items-center justify-between">
           <span>max</span>
           <span>min</span>

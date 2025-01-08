@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: usb
+productName: NoiseGenerator
 directories:
   buildResources: build
 files:
