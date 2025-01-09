@@ -3,7 +3,7 @@ import { Button } from "@renderer/components/ui/button";
 import PerformanceIndicator from "./performance-indicator";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Check, CheckIcon, Loader2Icon, Unplug, XIcon } from "lucide-react";
+import { Check, CheckIcon, Loader2Icon, RefreshCwIcon, Unplug, XIcon } from "lucide-react";
 import { createPacket, parsePacket } from "@renderer/helper/packet";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 import { sleep } from "@renderer/utils/sleep";
@@ -40,12 +40,25 @@ const DeviceStatus = (): JSX.Element => {
   };
 
   const getAllPorts = async () => {
+    toast("Load all ports", {
+      icon: <Loader2Icon className="animate-spin text-blue-600 duration-1000" />,
+      id: "get-ports",
+    });
     try {
       const portList = await window.context.serialPort.list();
       setPorts(portList);
       setListStatus("success");
+      await sleep(1000);
+      toast("Ports loaded successfully", {
+        icon: <Check className="text-green-600" />,
+        id: "get-ports",
+      });
     } catch {
       setListStatus("failure");
+      toast("Load all ports failed", {
+        icon: <XIcon className="text-red-600" />,
+        id: "get-ports",
+      });
     }
   };
 
@@ -191,20 +204,25 @@ const DeviceStatus = (): JSX.Element => {
           >
             Refresh
           </Button>
-          <select
-            onChange={(e) => setSelectedPort(e.target.value)}
-            className="w-full rounded-md border border-border px-3 py-2 focus-within:outline-none"
-            disabled={connectionStatus === "connected"}
-          >
-            <option disabled selected>
-              select port
-            </option>
-            {ports.map((port, index) => (
-              <option key={index} value={port.path}>
-                {port.path}
+          <div className="flex items-center gap-x-2">
+            <Button variant="ghost" disabled={connectionStatus === "connected"} onClick={getAllPorts}>
+              <RefreshCwIcon />
+            </Button>
+            <select
+              onChange={(e) => setSelectedPort(e.target.value)}
+              className="w-full rounded-md border border-border px-3 py-2 focus-within:outline-none"
+              disabled={connectionStatus === "connected"}
+            >
+              <option disabled selected>
+                select port
               </option>
-            ))}
-          </select>
+              {ports.map((port, index) => (
+                <option key={index} value={port.path}>
+                  {port.path}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
         <PerformanceIndicator value={+data.DPOWER.TXPOWER} className="mx-auto mt-10" />
         <div className="mt-0 space-y-5 text-center text-sm text-muted-foreground">Output Power (dbm)</div>
