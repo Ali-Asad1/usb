@@ -3,7 +3,7 @@ export const createPacket = (method: "SET" | "GET", type: string, attribute: str
 };
 
 export const parsePacket = (packet: string) => {
-  const match = packet.match(/\*START!\s\*(\w+)!!!\$\$(\w+)\s\*(\w+)\$\$([-!\w]+)\$\$RESERVED\$\$ENDOFPKT/);
+  const match = packet.match(/\*START!\s\*(\S+?)!!!\$\$(\S+?)\s\*(\S+?)\$\$([-!~\w.]+)\$\$RESERVED\$\$ENDOFPKT/);
   if (match) {
     return {
       method: match[1],
