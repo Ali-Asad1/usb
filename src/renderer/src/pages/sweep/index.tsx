@@ -96,7 +96,7 @@ const SweepPage = (): JSX.Element => {
         </div>
         <div>
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Level (0-255)
+            Level (0-255)
           </label>
           <Input
             type="number"
@@ -150,7 +150,7 @@ const SweepPage = (): JSX.Element => {
                 value = maxRange;
               }
 
-              onChange({ ...data, SWEEPF: { ...data.SWEEPF, SWPTIME: value } }); 
+              onChange({ ...data, SWEEPF: { ...data.SWEEPF, SWPTIME: value } });
             }}
           />
         </div>

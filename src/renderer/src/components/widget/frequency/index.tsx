@@ -13,7 +13,7 @@ const Frequency = (): JSX.Element => {
         {/* <CardDescription>Power Level</CardDescription> */}
       </CardHeader>
       <CardContent>
-      <CardDescription>Power Level</CardDescription>
+        <CardDescription>Power Level</CardDescription>
         <div className="mb-4 flex items-center justify-between">
           <span>max</span>
           <span>min</span>
@@ -41,7 +41,7 @@ const Frequency = (): JSX.Element => {
         </div> */}
         <div className="mt-5">
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-           Frequency (Hz)
+            Frequency (Hz)
           </label>
           <Input
             type="number"

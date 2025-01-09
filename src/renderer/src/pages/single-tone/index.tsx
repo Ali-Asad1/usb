@@ -34,7 +34,7 @@ const SingleTonePage = (): JSX.Element => {
           }}
         />
         <label htmlFor="attenuation0" className="mb-2 text-sm font-semibold">
-        Level (0-255)
+          Level (0-255)
         </label>
         <Input
           type="number"

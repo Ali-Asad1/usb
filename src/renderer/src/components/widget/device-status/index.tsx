@@ -207,7 +207,7 @@ const DeviceStatus = (): JSX.Element => {
           </select>
         </div>
         <PerformanceIndicator value={+data.DPOWER.TXPOWER} className="mx-auto mt-10" />
-        <div className="mt-0 space-y-5 text-muted-foreground text-sm text-center">Output Power (dbm)</div>
+        <div className="mt-0 space-y-5 text-center text-sm text-muted-foreground">Output Power (dbm)</div>
         <ExitButton />
       </div>
     </div>
