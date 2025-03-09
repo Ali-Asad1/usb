@@ -64,7 +64,7 @@ const initial = {
   },
   LOFATT: {
     LOFRQCY: 1000000000,
-    TXATTEN: 12,
+    TXATTEN: 65,
   },
 
   DPOWER: {
@@ -103,6 +103,15 @@ export const useDeviceSettings = create(
         });
       },
 
+      // ✅ بازگرداندن مقدار `history[1]` به مقدار قبلی در صورت `Invalid Response`
+      onInvalid: () => {
+        const { history } = get();
+        set({
+          data: history[0],   // مقدار اینپوت‌ها را به مقدار سالم برگردان
+          history: [history[0], history[0]], // مقدار `history[1]` نیز اصلاح شود
+        });
+      },
+
       setOnInitial: (type, attr) => {
         set((state) => ({
           data: {
@@ -114,7 +123,9 @@ export const useDeviceSettings = create(
         }));
       },
       updateField: (type, attr, value) => {
-        set((state) => ({ data: { ...state.data, [type]: { ...state.data[type], [attr]: value } } }));
+        set((state) => ({
+          data: { ...state.data, [type]: { ...state.data[type], [attr]: value } },
+        }));
       },
     }),
     {

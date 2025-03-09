@@ -3,6 +3,7 @@ import { SerialPort } from "serialport";
 export class SerialPortHandler {
   private port: SerialPort | null = null;
   private dataListener: ((data: string) => void) | null = null;
+  private buffer: string = ""; // ذخیره داده‌های دریافتی که ممکن است ناقص باشند
 
   async listPorts() {
     return SerialPort.list();
@@ -27,11 +28,19 @@ export class SerialPortHandler {
       });
 
       this.port.on("data", (data) => {
-        const receivedData = data.toString();
-        console.log(`Received data: ${receivedData}`);
+        this.buffer += data.toString(); // اضافه کردن داده به بافر
 
-        if (this.dataListener) {
-          this.dataListener(receivedData);
+        // بررسی اگر پکت کامل است (پایان آن "ENDOFPKT" باشد)
+        while (this.buffer.includes("ENDOFPKT")) {
+          const packetEndIndex = this.buffer.indexOf("ENDOFPKT") + "ENDOFPKT".length;
+          const completePacket = this.buffer.substring(0, packetEndIndex); // استخراج پکت کامل
+          this.buffer = this.buffer.substring(packetEndIndex); // حذف پکت پردازش‌شده از بافر
+
+          console.log(`Complete Packet Received: ${completePacket}`);
+
+          if (this.dataListener) {
+            this.dataListener(completePacket);
+          }
         }
       });
     });

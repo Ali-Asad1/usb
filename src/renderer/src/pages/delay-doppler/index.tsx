@@ -1,11 +1,49 @@
 import ActionButtons from "@renderer/components/common/action-buttons";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@renderer/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@renderer/components/ui/card";
 import { Input } from "@renderer/components/ui/input";
 import { Switch } from "@renderer/components/ui/swtich";
 import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
+import { useEffect } from "react";
 
 const DelayDopplerPage = (): JSX.Element => {
   const { data, onChange } = useDeviceSettings();
+
+  const processPacket = (packet: string) => {
+    if (packet.includes("DELDOP *DELAYEN$$1")) {
+      useDeviceSettings.getState().onChange({
+        ...useDeviceSettings.getState().data,
+        DELDOP: { ...useDeviceSettings.getState().data.DELDOP, DELAYEN: 1 },
+      });
+      console.log("Packet processed: DELAYEN set to 1");
+    } else if (packet.includes("DELDOP *DELAYEN$$0")) {
+      useDeviceSettings.getState().onChange({
+        ...useDeviceSettings.getState().data,
+        DELDOP: { ...useDeviceSettings.getState().data.DELDOP, DELAYEN: 0 },
+      });
+      console.log("Packet processed: DELAYEN set to 0");
+    }
+
+    if (packet.includes("DELDOP *DOPLREN$$1")) {
+      useDeviceSettings.getState().onChange({
+        ...useDeviceSettings.getState().data,
+        DELDOP: { ...useDeviceSettings.getState().data.DELDOP, DOPLREN: 1 },
+      });
+      console.log("Packet processed: DOPLREN set to 1");
+    } else if (packet.includes("DELDOP *DOPLREN$$0")) {
+      useDeviceSettings.getState().onChange({
+        ...useDeviceSettings.getState().data,
+        DELDOP: { ...useDeviceSettings.getState().data.DELDOP, DOPLREN: 0 },
+      });
+      console.log("Packet processed: DOPLREN set to 0");
+    }
+  };
+
+  useEffect(() => {
+    if (data.DELDOP) {
+      processPacket(`DELDOP *DELAYEN$$${data.DELDOP.DELAYEN}`);
+      processPacket(`DELDOP *DOPLREN$$${data.DELDOP.DOPLREN}`);
+    }
+  }, [data.DELDOP.DELAYEN, data.DELDOP.DOPLREN]);
 
   return (
     <Card>
@@ -16,71 +54,49 @@ const DelayDopplerPage = (): JSX.Element => {
       <CardContent className="grid grid-cols-1 gap-5">
         <div className="flex items-center gap-x-2">
           <Switch
-            checked={data.DELDOP.DELAYEN === 1 ? true : false}
-            onCheckedChange={(checked) => {
-              onChange({ ...data, DELDOP: { ...data.DELDOP, DELAYEN: checked ? 1 : 0 } });
-            }}
+            checked={data.DELDOP.DELAYEN === 1}
+            onCheckedChange={(checked) =>
+              processPacket(`DELDOP *DELAYEN$$${checked ? 1 : 0}`)
+            }
           />
           Enable Delay
         </div>
         <div className="flex items-center gap-x-2">
           <Switch
-            checked={data.DELDOP.DOPLREN === 1 ? true : false}
-            onCheckedChange={(checked) => {
-              onChange({ ...data, DELDOP: { ...data.DELDOP, DOPLREN: checked ? 1 : 0 } });
-            }}
+            checked={data.DELDOP.DOPLREN === 1}
+            onCheckedChange={(checked) =>
+              processPacket(`DELDOP *DOPLREN$$${checked ? 1 : 0}`)
+            }
           />
           Enable Doppler shift
         </div>
 
         <div>
-          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Delay (x 100 us)
-          </label>
+          <label className="text-sm font-medium">Delay (x 100 us)</label>
           <select
-            defaultValue={data.DELDOP.DLYVALU / 100}
-            onChange={(e) => {
-              onChange({ ...data, DELDOP: { ...data.DELDOP, DLYVALU: +e.target.value * 100 } });
-            }}
+            value={data.DELDOP.DLYVALU / 100}
+            onChange={(e) =>
+              onChange({ ...data, DELDOP: { ...data.DELDOP, DLYVALU: +e.target.value * 100 } })
+            }
             className="block w-full rounded-md border px-3 py-2 ring ring-transparent focus-within:outline-none focus-within:ring-primary"
           >
-            <option value={1}>1</option>
-            <option value={2}>2</option>
-            <option value={3}>3</option>
-            <option value={4}>4</option>
-            <option value={5}>5</option>
-            <option value={6}>6</option>
-            <option value={7}>7</option>
-            <option value={8}>8</option>
-            <option value={9}>9</option>
-            <option value={10}>10</option>
-            <option value={12}>12</option>
-            <option value={13}>13</option>
-            <option value={14}>14</option>
-            <option value={15}>15</option>
+            {[...Array(15).keys()].map((num) => (
+              <option key={num + 1} value={num + 1}>{num + 1}</option>
+            ))}
           </select>
         </div>
 
         <div>
-          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Doppler (Hz)
-          </label>
+          <label className="text-sm font-medium">Doppler (Hz)</label>
           <Input
             type="number"
             placeholder="Doppler Shift (Hz)"
             min={-28000000}
             max={28000000}
             value={data.DELDOP.DOPFREQ}
+            // disabled={false}
             onChange={(e) => {
-              let value = Number(e.target.value);
-
-              // Validate the input value
-              if (value < -28000000) {
-                value = -28000000;
-              } else if (value > 28000000) {
-                value = 28000000;
-              }
-
+              let value = Math.max(-28000000, Math.min(28000000, Number(e.target.value)));
               onChange({ ...data, DELDOP: { ...data.DELDOP, DOPFREQ: value } });
             }}
           />
@@ -92,4 +108,5 @@ const DelayDopplerPage = (): JSX.Element => {
     </Card>
   );
 };
+
 export default DelayDopplerPage;

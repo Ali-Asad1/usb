@@ -7,6 +7,9 @@ import { useDeviceSettings } from "@renderer/hooks/state/use-device-settings";
 
 const MultiTonePage = (): JSX.Element => {
   const { data, onChange } = useDeviceSettings();
+  const countSelectedTones = (mSelect: number): number => {
+    return decimalToBinaryArray(mSelect).filter((bit) => bit === 1).length;
+  };
 
   return (
     <Card>

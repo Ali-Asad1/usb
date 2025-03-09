@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "./header";
 import Sidebar from "./sidebar";
 import DeviceStatus from "@renderer/components/widget/device-status";
@@ -7,6 +7,31 @@ import SelectMode from "../widget/select-mode";
 import AnalyticsReport from "../widget/analytics-report";
 
 const Layout = (): JSX.Element => {
+  const location = useLocation();
+  type PageType = "single" | "multi" | "sweep" | "barrage" | "filtered" | "doppler" | "default";
+
+  // تعیین `pageType` بر اساس `pathname`
+  const getPageType = (pathname: string): PageType => {
+    switch (pathname) {
+      case "/single-tone":
+        return "single";
+      case "/multi-tone":
+        return "multi";
+      case "/sweep":
+        return "sweep";
+      case "/barrage":
+        return "barrage";
+      case "/filtered-noise":
+        return "filtered";
+      case "/delay-doppler":
+        return "doppler";
+      default:
+        return "default";
+    }
+  };
+
+  const pageType = getPageType(location.pathname);
+
   return (
     <div className="flex">
       <Header />
@@ -18,7 +43,7 @@ const Layout = (): JSX.Element => {
           <SelectMode />
         </div>
         <Outlet />
-        {/* <AnalyticsReport /> */}
+        <AnalyticsReport pageType={pageType} />
       </div>
       <DeviceStatus />
     </div>

@@ -31,7 +31,8 @@ const DeviceStatus = (): JSX.Element => {
       toast(`Connected to port ${selectedPort}`, {
         icon: <Check className="text-green-600" />,
       });
-    } catch {
+    } catch (error) {
+      console.error("Error connecting to port:", error);
       setConnectionStatus("error");
       toast("Connecting to port failed", {
         icon: <XIcon className="text-red-600" />,
@@ -70,6 +71,8 @@ const DeviceStatus = (): JSX.Element => {
           window.context.serialPort.write(createPacket("GET", type, attr, ""));
         }
       }
+      const customPacket = "*START! *GET!!!$$NOISES *NOISESS$$!!!!!!!!!!$$RESERVED$$ENDOFPKT";
+      window.context.serialPort.write(customPacket);
     }
   };
 
@@ -91,31 +94,95 @@ const DeviceStatus = (): JSX.Element => {
     }
   };
 
-  const disconnect = () => {
-    window.context.serialPort.disconnect();
-    setConnectionStatus("disconnect");
-    toast("Port Disconnected", {
-      icon: <Unplug className="text-red-600" />,
-    });
+  const disconnect = async () => {
+    try {
+      await window.context.serialPort.disconnect(); // قطع ارتباط با پورت
+      setConnectionStatus("idle"); // تغییر وضعیت به idle برای امکان اتصال مجدد
+      toast("Port Disconnected", {
+        icon: <Unplug className="text-red-600" />,
+      });
+    } catch (error) {
+      console.error("Error disconnecting from port:", error);
+      toast("Error disconnecting from port", {
+        icon: <XIcon className="text-red-600" />,
+      });
+    }
+  };
+
+  //add mapping for fields
+  const fieldNameMapping: Record<string, string> = {
+    // SINGLE
+    FREQCY0: "Single Frequency 0",
+    ATTENV0: "Single Attenuation Level 0",
+
+    // SWEEPF
+    MINFREQ: "Sweep Min Frequency",
+    MAXFREQ: "Sweep Max Frequency",
+    STPFREQ: "Sweep Step Frequency",
+    SWPTIME: "Sweep Time",
+    ATTENVL: "Sweep Attenuation Level",
+    REVERSE: "Reverse Sweep",
+
+    // MULTON
+    FREQCY1: "Multi-Tone Frequency 1",
+    FREQCY2: "Multi-Tone Frequency 2",
+    FREQCY3: "Multi-Tone Frequency 3",
+    FREQCY4: "Multi-Tone Frequency 4",
+    ATTENV1: "Attenuation Level 1",
+    ATTENV2: "Attenuation Level 2",
+    ATTENV4: "Attenuation Level 4",
+    ATTENV3: "Attenuation Level 3",
+    MSELECT: "Selection",
+    // FNOISE
+    NOISEBW: "Noise Bandwidth",
+    SHFFREQ: "Shift Frequency",
+    SHFENBL: "Shift Enable",
+    // BARAGE
+    BNUMBER: "Barrage Number",
+    // DELDOP
+    DELAYEN: "Doppler Delay Enable",
+    DOPLREN: "Doppler Enable",
+    DLYVALU: "Doppler Delay Value",
+    DOPFREQ: "Doppler Frequency",
+    // NOISES
+    NOISESS: "Noise Signal Strength",
+    PSGMODE: "Noise PSG Mode",
+    ONDETER: "pulse OnTime",
+    OFFDETR: "pulse OffTime",
+    ONSTOCH: "R.pulse OnTime ",
+    OFFSTOC: "R.pulse OffTime ",
+    // LOFATT
+    LOFRQCY: "Frequency",
+    TXATTEN: "Frequency-Attenuation",
+
+    // DPOWER
+    TXPOWER: "Transmission Power",
   };
 
   const handleResponse = (chunk: string) => {
     const parsedResponse = parsePacket(chunk);
     if (parsedResponse) {
+      // use `fieldNameMapping`
+      const fieldName = fieldNameMapping[parsedResponse.attribute] || parsedResponse.attribute;
+
       switch (parsedResponse.method) {
         case "SET": {
           switch (parsedResponse.data.toLowerCase()) {
             case "ok":
-              toast(`Data ${parsedResponse.attribute}: set successfully`, {
-                icon: <CheckIcon className="text-green-600" />,
+              setTimeout(() => {
+                toast(`${fieldName}: set successfully`, {
+                  icon: <CheckIcon className="text-green-600" />,
+                });
               });
               break;
 
             default:
-              toast(`Error ${parsedResponse.attribute}: ${parsedResponse.data}`, {
-                icon: <XIcon className="text-red-600" />,
+              setTimeout(() => {
+                toast(`Error in ${fieldName}: ${parsedResponse.data}`, {
+                  icon: <XIcon className="text-red-600" />,
+                });
+                setOnInitial(parsedResponse.type, parsedResponse.attribute);
               });
-              setOnInitial(parsedResponse.type, parsedResponse.attribute);
               break;
           }
           break;
@@ -158,6 +225,12 @@ const DeviceStatus = (): JSX.Element => {
         return <Badge variant="destructive">Connection Failed</Badge>;
       default:
         return <Badge variant="secondary">Disconnected</Badge>;
+    }
+  };
+
+  const handleConnectionLost = () => {
+    if (connectionStatus === "connected") {
+      disconnect();
     }
   };
 
@@ -224,7 +297,12 @@ const DeviceStatus = (): JSX.Element => {
             </select>
           </div>
         </div>
-        <PerformanceIndicator value={+data.DPOWER.TXPOWER} className="mx-auto mt-10" />
+        <PerformanceIndicator
+          value={+data.DPOWER.TXPOWER}
+          isConnected={connectionStatus === "connected"}
+          onConnectionLost={handleConnectionLost} // ارسال تابع برای مدیریت قطع ارتباط
+          className="mx-auto mt-10"
+        />{" "}
         <div className="mt-0 space-y-5 text-center text-sm text-muted-foreground">Output Power (dbm)</div>
         <ExitButton />
       </div>
